@@ -1,0 +1,1 @@
+interface IBlockConductor extends IConductor {}

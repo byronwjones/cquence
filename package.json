@@ -1,0 +1,16 @@
+{
+  "name": "c-quence",
+  "version": "1.0.0",
+  "description": "Compose and invoke a logical sequence of JavaScript functions",
+  "main": "dist/cq.js",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/byronwjones/cquence.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {}
+}

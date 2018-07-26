@@ -1,0 +1,1 @@
+interface IUnitConductor extends IConductor {}

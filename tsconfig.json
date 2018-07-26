@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "umd",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "outFile": "dist/cq.js",
+        "target": "es3"
+    }
+}
