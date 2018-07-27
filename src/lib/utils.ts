@@ -95,7 +95,15 @@ class Utils {
         }
     }
 
-    resolveCodeBlockSubject (value:any, lets:NormalMap, allowPrimitives:boolean): any {
+    isAnIteratingBlockConductor(obj:any): boolean {
+        return !this.isNullOrUndefined(obj) &&
+                this.isFunction(obj.break) &&
+                this.isFunction(obj.continue);
+    }
+
+    // returns the object that is the being iterated over or evaluated for
+    //  an if statement, while loop, etc.
+    resolveCodeBlockPredicate (value:any, lets:NormalMap, allowPrimitives:boolean): any {
         //return primitives immediately
         if (allowPrimitives && this.isPrimitiveValue(value) && !this.isString(value)) {
             return value;
@@ -147,6 +155,23 @@ class Utils {
 
         //return value information
         return value;
+    }
+
+    // creates a shallow copy of a lets object
+    copyLetsObject(from: NormalMap, to: NormalMap): NormalMap {
+        this.foreach(from, function (val, prop) {
+            to[prop] = val;
+        });
+
+        return to;
+    }
+
+    updateLetsObject(objToUpdate: NormalMap, sourceObj: NormalMap): NormalMap {
+        this.foreach(objToUpdate, function (val, prop) {
+            objToUpdate[prop] = sourceObj[prop];
+        });
+
+        return objToUpdate;
     }
 
     private parsePropertyString (s:string): IPropertyInfo {

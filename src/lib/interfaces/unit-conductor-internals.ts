@@ -1,4 +1,4 @@
 interface IUnitConductorInternals {
-    blockConductor: IBlockConductor,
-    hasControl: boolean
+    blockConductor: IBlockConductor;
+    hasControl: boolean;
 }

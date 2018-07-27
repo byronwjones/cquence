@@ -1,8 +1,8 @@
 class IteratingUnitConductor extends UnitConductor {
-    constructor(blockDriver: IBlockConductor,
+    constructor(blockConductor: IBlockConductor,
                 unitFn: UnitFunction,
                 iterationProperties: IIterationProperties) {
-        super(blockDriver, unitFn);
+        super(blockConductor, unitFn);
         
         this.$key = iterationProperties.$key;
         this.$object = iterationProperties.$object;
