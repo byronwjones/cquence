@@ -1,8 +1,11 @@
 interface IBlockConductorInternals {
     runCompleted: boolean;
     currentExecutionTargetIndex: number;
-    executionTargets: Array<UnitFunction | IConductorBuilder>;
+    executionTargets: Array<ExecutionTarget>;
     parentConductor: IBlockConductor;
     iterationProperties?: IIterationProperties;
     update?: (updateInfo: any) => void;
+    success?: (returnValue: any) => void;
+    error?: (errorDetails: string | Error) => void;
+    finally?: () => void;
 }

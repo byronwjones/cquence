@@ -1,3 +1,3 @@
 interface IConductorBuilder {
-    build: (conductor: IBlockConductor) => any;
+    build: (conductor: IBlockConductor) => BlockConductorBase;
 }

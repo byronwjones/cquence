@@ -7,6 +7,8 @@ abstract class BlockConductorBase implements IBlockConductor {
 
     abstract _onRunComplete(ok: boolean, feedback?: any): void
 
+    abstract start(): void
+
     lets: NormalMap
 
     // Determines if there is another unit function, or child 'code block', to call within the 'code block'
@@ -31,18 +33,23 @@ abstract class BlockConductorBase implements IBlockConductor {
                 if (utils.isFunction(exeTarget)) {
                     // create the correct type of unit conductor
                     let fn = exeTarget as UnitFunction;
+                    let uc: UnitConductor;
                     if (utils.isAnIteratingBlockConductor(this)) {
-                        new IteratingUnitConductor(this, fn, this._.iterationProperties);
+                        uc = new IteratingUnitConductor(this, this._.iterationProperties);
                     }
                     else {
-                        new UnitConductor(this, fn);
+                        uc = new UnitConductor(this);
                     }
+
+                    // execute unit function
+                    fn(uc);
                 }
                 // execution target is a child 'code block' --
-                //  use the conductor builder to create a block constructor,
-                //  passing control of the virtual function to it
+                //  use the conductor builder to create a block conductor
                 else {
-                    (<IConductorBuilder>exeTarget).build(this);
+                    let bc = (<IConductorBuilder>exeTarget).build(this);
+                    // pass control to the created block conductor
+                    bc.start();
                 }
             }
             catch (err) {

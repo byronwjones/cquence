@@ -5,16 +5,13 @@
 //  won't work, and will throw an error
 
 class UnitConductor implements IUnitConductor {
-    constructor(blockConductor: IBlockConductor, unitFn: UnitFunction) {
+    constructor(blockConductor: IBlockConductor) {
         this.lets = blockConductor.lets;
     
         this[privado] = {
             blockDriver: blockConductor,
             hasControl: true
         };
-    
-        //begin immediately
-        unitFn(this);
     }
 
     [key: string]: any
