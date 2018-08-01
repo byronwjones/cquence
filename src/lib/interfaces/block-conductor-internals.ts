@@ -4,6 +4,9 @@ interface IBlockConductorInternals {
     executionTargets: Array<ExecutionTarget>;
     parentConductor: IBlockConductor;
     iterationProperties?: IIterationProperties;
+    iterationSubject?: {[key: string]: any};
+    iterationSubjectKeys?: Array<string | number>;
+    subjectKeyIndex?: number;
     doWhile?: boolean;
     predicate?: any;
     update?: (updateInfo: any) => void;
