@@ -48,8 +48,17 @@ abstract class SequenceConductorBase implements ISequenceConductor {
                 //  use the conductor builder to create a sequence conductor
                 else {
                     let bc = (<IConductorBuilder>exeTarget).build(this);
-                    // pass control to the created sequence conductor
-                    bc.start();
+                    // pass control to the created sequence conductor.
+                    // Note that if the conductor builder decided not to create a conductor
+                    //  (which is something that happens when none of the conditions in a conditional builder resolve to true)
+                    //  it will return a null conductor. When this happens, we just move on to the next execution target
+                    //  in the sequence.
+                    if(!!bc){
+                        bc.start();
+                    }
+                    else {
+                        this.next();
+                    }
                 }
             }
             catch (err) {

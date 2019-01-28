@@ -6,6 +6,8 @@ interface IConductorBuilder {
     update?: (updateDetail: any) => void,
     postSuccessOrFail?: () => void) => SequenceConductorBase;
 
+    add: (executionTarget: ExecutionTarget) => void;
+
     type: ConductorBuilderType;
     fnName: string;
 }
