@@ -1,10 +1,12 @@
 /// <reference path="conductor.ts" />
-/// <reference path="block-conductor.ts" />
-/// <reference path="block-conductor-internals-base.ts" />
+/// <reference path="cq-conductor.ts" />
+/// <reference path="cq-conductor-internals.ts" />
 
-/// <reference path="unit-conductor.ts" />
-/// <reference path="unit-conductor-internals.ts" />
+/// <reference path="conductor-ui.ts" />
+/// <reference path="conductor-ui-internals.ts" />
 
 /// <reference path="property-info.ts" />
 
 /// <reference path="iteration-properties.ts" />
+
+/// <reference path="conductor-builder.ts" />

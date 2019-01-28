@@ -1,7 +1,7 @@
-class BlockConductor extends BlockConductorBase {
+class LinearSequenceConductor extends SequenceConductorBase {
     
     constructor(executionTargets: ExecutionTarget[],
-        parentConductor?: BlockConductorBase,
+        parentConductor?: SequenceConductorBase,
         args?: NormalMap,
         success?: (value: any) => void,
         error?: (errorDetail: string | Error) => void,
@@ -9,9 +9,9 @@ class BlockConductor extends BlockConductorBase {
         postSuccessOrFail?: () => void) {
         super();
     
-        // Build the local scope of variables for the code block managed by this instance.
-        //  if it has a parent block, it inherits the variables from the parent's local scope
-        //  otherwise, this is the function body block, and its initial variables are any arguments
+        // Build the local scope of variables for the sequence managed by this instance.
+        //  if it has a parent sequence, it inherits the variables from the parent's local scope
+        //  otherwise, this is the function's main sequence, and its initial variables are any arguments
         //  passed into the virtual function
         if (!!parentConductor) {
             this.lets = utils.copyLetsObject(parentConductor.lets, {});
@@ -41,7 +41,7 @@ class BlockConductor extends BlockConductorBase {
     _onRunComplete(ok: boolean, feedback: any): void {
         this._.runCompleted = true;
 
-        //yield to parent block conductor if one exists, if not, 
+        //yield to parent sequence conductor if one exists, if not, 
         //  invoke registered callbacks
         if (!!this._.parentConductor) {
             utils.updateLetsObject(this._.parentConductor.lets, this.lets);

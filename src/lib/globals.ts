@@ -4,6 +4,6 @@ type NormalMap = {[key:string]: any};
 
 /// <reference path="interfaces/interfaces.ts" />
 
-type UnitFunction = (unitConductor: IUnitConductor) => void;
+type UnitFunction = (unitConductor: IConductorInterface) => void;
 
 type ExecutionTarget = UnitFunction | IConductorBuilder;

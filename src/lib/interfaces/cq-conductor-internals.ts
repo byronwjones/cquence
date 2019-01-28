@@ -1,8 +1,8 @@
-interface IBlockConductorInternals {
+interface ISequenceConductorInternals {
     runCompleted: boolean;
     currentExecutionTargetIndex: number;
     executionTargets: Array<ExecutionTarget>;
-    parentConductor: IBlockConductor;
+    parentConductor: ISequenceConductor;
     iterationProperties?: IIterationProperties;
     iterationSubject?: {[key: string]: any};
     iterationSubjectKeys?: Array<string | number>;

@@ -1,9 +1,9 @@
-//Code block conductors manage the flow of the virtual function. It contains an array of unit functions,
-//  and it coordinates which unit function in its array to call,
-//  and when to yield control of the virtual function flow to a parent block conductor
+//Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of execution targets,
+//  coordinating which execution target to call,
+//  and when to yield control of the virtual function flow to a parent sequence conductor
 
-abstract class BlockConductorBase implements IBlockConductor {
-    _: IBlockConductorInternals
+abstract class SequenceConductorBase implements ISequenceConductor {
+    _: ISequenceConductorInternals
 
     abstract _onRunComplete(ok: boolean, feedback?: any): void
 
@@ -11,14 +11,14 @@ abstract class BlockConductorBase implements IBlockConductor {
 
     lets: NormalMap
 
-    // Determines if there is another unit function, or child 'code block', to call within the 'code block'
-    //  that this block conductor manages.  If there is, it will either create the appropriate unit
-    //  conductor the unit function will use to interface with this object and execute the unit function,
-    //  or it will create a block conductor that will execute the child 'code block'.
-    //  If there are no more unit functions/child 'code blocks' to execute, this block conductor will
-    //  yield runtime control to its parent block conductor (if it has one), or end the virtual function.
+    // Determines if there is another unit function or child sequence (aka 'execution target'), to call
+    //  within the sequence that this conductor manages.  If there is, it will either create
+    //  the appropriate conductor interface for interaction with this conductor, passing it into and invoking a unit function,
+    //  or it will create a child sequence conductor that will execute the child sequence.
+    //  If there are no more execution targets, this sequence conductor will
+    //  yield runtime control to its parent sequence conductor (if it has one), or end the virtual function.
     next(): void {
-        // do nothing if this block conductor is already done working
+        // do nothing if this sequence conductor is already done working
         if (this._.runCompleted) {
             return;
         } 
@@ -31,24 +31,24 @@ abstract class BlockConductorBase implements IBlockConductor {
             try {
                 // execution target is a unit function
                 if (utils.isFunction(exeTarget)) {
-                    // create the correct type of unit conductor
+                    // create the correct type of conductor interface
                     let fn = exeTarget as UnitFunction;
-                    let uc: UnitConductor;
-                    if (utils.isAnIteratingBlockConductor(this)) {
-                        uc = new IteratingUnitConductor(this, this._.iterationProperties);
+                    let uc: ConductorInterface;
+                    if (utils.isAnIteratingSequenceConductor(this)) {
+                        uc = new IteratingConductorInterface(this, this._.iterationProperties);
                     }
                     else {
-                        uc = new UnitConductor(this);
+                        uc = new ConductorInterface(this);
                     }
 
                     // execute unit function
                     fn(uc);
                 }
-                // execution target is a child 'code block' --
-                //  use the conductor builder to create a block conductor
+                // execution target is a child sequence --
+                //  use the conductor builder to create a sequence conductor
                 else {
                     let bc = (<IConductorBuilder>exeTarget).build(this);
-                    // pass control to the created block conductor
+                    // pass control to the created sequence conductor
                     bc.start();
                 }
             }
@@ -56,7 +56,7 @@ abstract class BlockConductorBase implements IBlockConductor {
                 this.error(err);
             }
         }
-        else { //if block completed, handle as a successful run
+        else { //if sequence completed, handle as a successful run
             this._onRunComplete(true);
         }
     }
@@ -66,12 +66,12 @@ abstract class BlockConductorBase implements IBlockConductor {
             return;
         }
 
-        // if this has a parent block conductor, call error on it
+        // if this has a parent sequence conductor, call error on it
         if (!!this._.parentConductor) {
             this._.runCompleted = true;
             this._.parentConductor.error(exception);
         }
-        // if no parent (this is the conductor for the body of the virtual function),
+        // if no parent (this is the conductor for main sequence of the virtual function),
         //   call failure callback/reject Promise
         else { 
             this._onRunComplete(false, exception);
@@ -83,8 +83,8 @@ abstract class BlockConductorBase implements IBlockConductor {
             return;
         }
 
-        // If this block conductor has a parent, call return on it,
-        //  otherwise this is the conductor for the virtual function's main block
+        // If this sequence conductor has a parent, call return on it,
+        //  otherwise this is the conductor for the virtual function's main sequence
         //  in which case call the success callback/fulfill the Promise
         if (!!this._.parentConductor) {
             this._.runCompleted = true;
@@ -100,7 +100,7 @@ abstract class BlockConductorBase implements IBlockConductor {
             return;
         }
 
-        // call update up the hierarchy to the main block conductor,
+        // call update up the hierarchy to the main sequence conductor,
         //  when that is reached, the actual update callback will be invoked
         if (!!this._.parentConductor) {
             this._.parentConductor.update(updateInfo);

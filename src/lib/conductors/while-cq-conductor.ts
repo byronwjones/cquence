@@ -1,6 +1,6 @@
-class WhileBlockConductor extends IteratingBlockConductor {
+class WhileSequenceConductor extends IteratingSequenceConductor {
 
-    constructor(parentConductor: BlockConductorBase,
+    constructor(parentConductor: SequenceConductorBase,
                 executionTargets: ExecutionTarget[],
                 predicate: any,
                 doWhile: boolean) {
@@ -28,9 +28,9 @@ class WhileBlockConductor extends IteratingBlockConductor {
         }
 
         // if this is the first in a do/while iteration, or if the while predicate evaluates true,
-        //  iterate through the block again.  Otherwise pass control back to the parent conductor
+        //  iterate through the sequence again.  Otherwise pass control back to the parent conductor
         if (this._.doWhile ||
-            !!utils.resolveCodeBlockPredicate(this._.predicate, this._.parentConductor.lets, true)) {
+            !!utils.resolveSequencePredicate(this._.predicate, this._.parentConductor.lets, true)) {
             
             this._.doWhile = false;
             // recreate the lets object from a copy of the parent on every iteration.

@@ -1,6 +1,6 @@
-class ForEachBlockConductor extends IteratingBlockConductor {
+class ForEachSequenceConductor extends IteratingSequenceConductor {
     
-    constructor(parentConductor: BlockConductorBase,
+    constructor(parentConductor: SequenceConductorBase,
                 executionTargets: ExecutionTarget[],
                 predicate: any) {
         super();
@@ -12,7 +12,7 @@ class ForEachBlockConductor extends IteratingBlockConductor {
         this._.subjectKeyIndex = -1;
     
         this._.iterationSubject =
-            utils.resolveCodeBlockPredicate(predicate, parentConductor.lets, false);
+            utils.resolveSequencePredicate(predicate, parentConductor.lets, false);
         
         // get the keys (indices or object properties) this conductor will iterate over
         this._.iterationSubjectKeys = null;
@@ -38,7 +38,7 @@ class ForEachBlockConductor extends IteratingBlockConductor {
         //   on for this run
         this._.subjectKeyIndex++;
 
-        // reset to start iterating from the first execution target
+        // reset to start iterating from the first execution target in the sequence
         this._.currentExecutionTargetIndex = -1;
 
         if (!!this.lets) {
@@ -60,7 +60,7 @@ class ForEachBlockConductor extends IteratingBlockConductor {
             this.next();
         }
         else {
-            // return control to parent block conductor
+            // return control to parent sequence conductor
             this._.runCompleted = true;
             this._.parentConductor.next();
         }

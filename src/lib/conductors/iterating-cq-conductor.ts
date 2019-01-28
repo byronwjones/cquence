@@ -1,11 +1,11 @@
-abstract class IteratingBlockConductor extends BlockConductorBase {
+abstract class IteratingSequenceConductor extends SequenceConductorBase {
     break(): void {
         if (this._.runCompleted) {
             return;
         }
 
         this._.runCompleted = true;
-        // yield control to parent block conductor
+        // yield control to parent sequence conductor
         utils.updateLetsObject(this._.parentConductor, this.lets);
         this._.parentConductor.next();
     }
@@ -15,10 +15,10 @@ abstract class IteratingBlockConductor extends BlockConductorBase {
             return;
         }
 
-        // Keep in mind that a run is a complete trip through all blocks in a blockset,
+        // Keep in mind that a run is a complete trip through all the execution targets in a sequence,
         //  not necessarily resulting in a yielding of control to a parent
-        //  block conductor -- this conductor isn't necessarily giving up control,
-        //  this simply means that this iteration through the block is complete
+        //  sequence conductor -- this conductor isn't necessarily giving up control,
+        //  this simply means that this iteration through the sequence that this conductor is managing is complete
         this._onRunComplete(true);
     }
 }

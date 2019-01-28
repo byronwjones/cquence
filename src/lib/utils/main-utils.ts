@@ -1,9 +1,3 @@
-enum ValueTransform {
-    none,
-    toBoolean,
-    toInvertedBoolean
-}
-
 class Utils {
 
     isNull (value:any): boolean {
@@ -95,15 +89,15 @@ class Utils {
         }
     }
 
-    isAnIteratingBlockConductor(obj:any): boolean {
+    isAnIteratingSequenceConductor(obj:any): boolean {
         return !this.isNullOrUndefined(obj) &&
                 this.isFunction(obj.break) &&
                 this.isFunction(obj.continue);
     }
 
     // returns the object that is the being iterated over or evaluated for
-    //  an if statement, while loop, etc.
-    resolveCodeBlockPredicate (value:any, lets:NormalMap, allowPrimitives:boolean): any {
+    //  a conditional sequence, foreach/while looping sequence, etc.
+    resolveSequencePredicate (value:any, lets:NormalMap, allowPrimitives:boolean): any {
         //return primitives immediately
         if (allowPrimitives && this.isPrimitiveValue(value) && !this.isString(value)) {
             return value;
@@ -150,9 +144,10 @@ class Utils {
             }
         }
 
-        if (!allowPrimitives && this.isPrimitiveValue(value))
+        if (!allowPrimitives && this.isPrimitiveValue(value)) {
             throw new TypeError('Value provided for evaluation must be either an Array, a non-primitive Object, or a function that returns one of the preceding');
-
+        }
+        
         //return value information
         return value;
     }
