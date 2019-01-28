@@ -36,7 +36,7 @@ class ConditionalSequenceConductorBuilder implements IConductorBuilder {
         this.conditions.push(this.currentCondition);
     }
 
-    build(parentConductor?: SequenceConductorBase): SequenceConductorBase {
+    build(parentConductor: SequenceConductorBase): SequenceConductorBase {
             var self = this;
             
             //determine which sequence to use

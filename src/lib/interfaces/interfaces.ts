@@ -10,3 +10,4 @@
 /// <reference path="iteration-properties.ts" />
 
 /// <reference path="conductor-builder.ts" />
+/// <reference path="conditional-cq.ts" />
