@@ -1,6 +1,6 @@
 // Builder for a conductor that iterates through a sequence once for each member of its associated map or array
 class ForEachSequenceConductorBuilder implements IConductorBuilder {
-    constructor(predicate: NormalMap | any[], doWhile: boolean) {
+    constructor(predicate: any) {
         this.sequence = [];
         this.predicate = predicate;
     }
@@ -9,7 +9,7 @@ class ForEachSequenceConductorBuilder implements IConductorBuilder {
     fnName: "forEach()";
 
     sequence: ExecutionTarget[];
-    predicate: NormalMap | any[];
+    predicate: any;
 
     add(executionTarget: ExecutionTarget): void {
         this.sequence.push(executionTarget);

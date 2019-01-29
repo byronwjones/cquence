@@ -3,6 +3,7 @@
 class ConditionalSequenceConductorBuilder implements IConductorBuilder {
     constructor(predicate: any) {
 
+        this.fnName = "if()";
         this.currentCondition = {
             predicate: predicate,
             sequence: []
@@ -12,7 +13,7 @@ class ConditionalSequenceConductorBuilder implements IConductorBuilder {
     }
 
     type: ConductorBuilderType.CONDITIONAL;
-    fnName: "if()";
+    fnName: string;
 
     currentCondition: IConditionalSequence;
     conditions: IConditionalSequence[];

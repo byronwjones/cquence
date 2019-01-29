@@ -11,3 +11,5 @@
 
 /// <reference path="conductor-builder.ts" />
 /// <reference path="conditional-cq.ts" />
+
+/// <reference path="callback-virtual-fn-params.ts" />

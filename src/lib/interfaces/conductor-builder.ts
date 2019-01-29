@@ -10,4 +10,6 @@ interface IConductorBuilder {
 
     type: ConductorBuilderType;
     fnName: string;
+    sequence?: ExecutionTarget[];
+    currentCondition?: IConditionalSequence;
 }
