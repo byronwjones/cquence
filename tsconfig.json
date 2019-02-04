@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "umd",
+        "module": "None",
         "noImplicitAny": true,
         "removeComments": false,
         "outFile": "dist/cq.js",
