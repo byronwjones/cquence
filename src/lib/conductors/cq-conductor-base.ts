@@ -1,7 +1,3 @@
-//Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of execution targets,
-//  coordinating which execution target to call,
-//  and when to yield control of the virtual function flow to a parent sequence conductor
-
 abstract class SequenceConductorBase implements ISequenceConductor {
     _: ISequenceConductorInternals
 

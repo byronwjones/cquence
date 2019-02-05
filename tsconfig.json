@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "module": "None",
+        "module": "es2015",  /* using ES2015 modules */
+        "target": "ES2015",  /* Build to ES2015 */
+        "outDir": "./dist/esm/", /* build to ./dist/esm/ */
         "noImplicitAny": true,
-        "removeComments": false,
-        "outFile": "dist/cq.js",
-        "target": "es3"
+        "removeComments": false
     }
 }
