@@ -1,4 +1,6 @@
-
+import { IConductor } from "../interfaces/conductor";
+import { IConductorInterfaceInternals } from "../interfaces/conductor-ui-internals";
+import { privado } from "../types/primary-types";
 
 let ucUtils = (function(){
     class ConductorInterfaceUtils {
@@ -43,3 +45,5 @@ let ucUtils = (function(){
 
     return new ConductorInterfaceUtils();
 })();
+
+export {ucUtils};

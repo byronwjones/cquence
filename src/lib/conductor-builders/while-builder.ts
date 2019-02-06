@@ -1,5 +1,11 @@
+import { IConductorBuilder } from "../interfaces/conductor-builder";
+import { ConductorBuilderType } from "../enums/conductor-builder-type";
+import { ExecutionTarget } from "../types/secondary-types";
+import { SequenceConductorBase } from "../conductors/cq-conductor-base";
+import { WhileSequenceConductor } from "../conductors/while-cq-conductor";
+
 // Builder for a conductor that iterates through a sequence as long as its associated predicate resolves to true
-class WhileSequenceConductorBuilder implements IConductorBuilder {
+export class WhileSequenceConductorBuilder implements IConductorBuilder {
     constructor(predicate: any, doWhile: boolean) {
         this.sequence = [];
         this.predicate = predicate;

@@ -1,5 +1,11 @@
+import { IConductorBuilder } from "../interfaces/conductor-builder";
+import { ConductorBuilderType } from "../enums/conductor-builder-type";
+import { ExecutionTarget } from "../types/secondary-types";
+import { SequenceConductorBase } from "../conductors/cq-conductor-base";
+import { ForEachSequenceConductor } from "../conductors/foreach-cq-conductor";
+
 // Builder for a conductor that iterates through a sequence once for each member of its associated map or array
-class ForEachSequenceConductorBuilder implements IConductorBuilder {
+export class ForEachSequenceConductorBuilder implements IConductorBuilder {
     constructor(predicate: any) {
         this.sequence = [];
         this.predicate = predicate;

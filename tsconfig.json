@@ -1,9 +1,12 @@
 {
     "compilerOptions": {
-        "module": "None",
+        "module": "es2015",
+        "target": "es3",
         "noImplicitAny": true,
         "removeComments": false,
-        "outFile": "dist/cq.js",
-        "target": "es3"
-    }
+        "outDir": "./dist/esm/"
+    },
+    "files": [
+      "./src/lib/index.ts"
+    ]
 }

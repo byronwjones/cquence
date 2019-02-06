@@ -1,4 +1,12 @@
-class Composer {
+import { privado } from "../types/primary-types";
+import { PrivateComposerAPI } from "./private-api";
+import { UnitFunction, CompositionFunction } from "../types/secondary-types";
+import { utils } from "../utils/main-utils";
+import { ConditionalSequenceConductorBuilder } from "../conductor-builders/conditional-builder";
+import { ConductorBuilderType } from "../enums/conductor-builder-type";
+import { ForEachSequenceConductorBuilder } from "../conductor-builders/foreach-builder";
+
+export class Composer {
     constructor(){
         this[privado] = new PrivateComposerAPI(this);
     }

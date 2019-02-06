@@ -1,4 +1,9 @@
-class IteratingConductorInterface extends ConductorInterface {
+import { ConductorInterface } from "./conductor-ui";
+import { ISequenceConductor } from "../interfaces/cq-conductor";
+import { IIterationProperties } from "../interfaces/iteration-properties";
+import { ucUtils } from "../utils/conductor-ui-utils";
+
+export class IteratingConductorInterface extends ConductorInterface {
     constructor(sequenceConductor: ISequenceConductor,
                 iterationProperties: IIterationProperties) {
         super(sequenceConductor);

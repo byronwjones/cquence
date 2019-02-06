@@ -1,4 +1,9 @@
-class ForEachSequenceConductor extends IteratingSequenceConductor {
+import { IteratingSequenceConductor } from "./iterating-cq-conductor";
+import { SequenceConductorBase } from "./cq-conductor-base";
+import { ExecutionTarget } from "../types/secondary-types";
+import { utils } from "../utils/main-utils";
+
+export class ForEachSequenceConductor extends IteratingSequenceConductor {
     
     constructor(parentConductor: SequenceConductorBase,
                 executionTargets: ExecutionTarget[],

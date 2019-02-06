@@ -1,6 +1,14 @@
+import { IConductorBuilder } from "../interfaces/conductor-builder";
+import { ConductorBuilderType } from "../enums/conductor-builder-type";
+import { IConditionalSequence } from "../interfaces/conditional-cq";
+import { ExecutionTarget } from "../types/secondary-types";
+import { utils } from "../utils/main-utils";
+import { SequenceConductorBase } from "../conductors/cq-conductor-base";
+import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
+
 // Builder for a linear conductor that only iterates through a sequence when an associated predicate
 //  resolves to true
-class ConditionalSequenceConductorBuilder implements IConductorBuilder {
+export class ConditionalSequenceConductorBuilder implements IConductorBuilder {
     constructor(predicate: any) {
 
         this.fnName = "if()";

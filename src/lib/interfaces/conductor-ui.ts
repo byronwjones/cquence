@@ -1,1 +1,3 @@
-interface IConductorInterface extends IConductor {}
+import { IConductor } from "./conductor";
+
+export interface IConductorInterface extends IConductor {}

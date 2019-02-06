@@ -1,4 +1,4 @@
-enum ConductorBuilderType {
+export enum ConductorBuilderType {
     LINEAR,
     CONDITIONAL,
     WHILE,

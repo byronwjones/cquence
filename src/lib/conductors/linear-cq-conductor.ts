@@ -1,4 +1,9 @@
-class LinearSequenceConductor extends SequenceConductorBase {
+import { SequenceConductorBase } from "./cq-conductor-base";
+import { ExecutionTarget } from "../types/secondary-types";
+import { NormalMap } from "../types/primary-types";
+import { utils } from "../utils/main-utils";
+
+export class LinearSequenceConductor extends SequenceConductorBase {
     
     constructor(executionTargets: ExecutionTarget[],
         parentConductor?: SequenceConductorBase,

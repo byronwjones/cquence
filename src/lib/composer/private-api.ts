@@ -1,4 +1,13 @@
-class PrivateComposerAPI {
+import { LinearSequenceConductorBuilder } from "../conductor-builders/linear-builder";
+import { IConductorBuilder } from "../interfaces/conductor-builder";
+import { ExecutionTarget, CompositionFunction, VirtualFunction } from "../types/secondary-types";
+import { WhileSequenceConductorBuilder } from "../conductor-builders/while-builder";
+import { NormalMap } from "../types/primary-types";
+import { utils } from "../utils/main-utils";
+import { ICallbackVirtualFunctionParameters } from "../interfaces/callback-virtual-fn-params";
+import { Composer } from "./composer";
+
+export class PrivateComposerAPI {
     constructor(self:Composer){
         this.self = self;
         this.rootBuilder = new LinearSequenceConductorBuilder();

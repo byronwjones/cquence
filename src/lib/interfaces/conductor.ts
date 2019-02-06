@@ -1,4 +1,6 @@
-interface IConductor {
+import { NormalMap } from "../types/primary-types";
+
+export interface IConductor {
     lets: NormalMap;
     error: (exception?: string | Error) => void;
     next: () => void;

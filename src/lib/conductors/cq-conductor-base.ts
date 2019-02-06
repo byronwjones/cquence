@@ -1,8 +1,17 @@
+import { ISequenceConductor } from "../interfaces/cq-conductor";
+import { ISequenceConductorInternals } from "../interfaces/cq-conductor-internals";
+import { NormalMap } from "../types/primary-types";
+import { utils } from "../utils/main-utils";
+import { UnitFunction } from "../types/secondary-types";
+import { IConductorBuilder } from "../interfaces/conductor-builder";
+import { ConductorInterface } from "../conductor-interfaces/conductor-ui"
+import { IteratingConductorInterface } from "../conductor-interfaces/iterating-conductor-ui"
+
 //Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of execution targets,
 //  coordinating which execution target to call,
 //  and when to yield control of the virtual function flow to a parent sequence conductor
 
-abstract class SequenceConductorBase implements ISequenceConductor {
+export abstract class SequenceConductorBase implements ISequenceConductor {
     _: ISequenceConductorInternals
 
     abstract _onRunComplete(ok: boolean, feedback?: any): void

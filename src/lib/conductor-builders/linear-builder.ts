@@ -1,3 +1,10 @@
+import { IConductorBuilder } from "../interfaces/conductor-builder";
+import { ConductorBuilderType } from "../enums/conductor-builder-type";
+import { ExecutionTarget } from "../types/secondary-types";
+import { SequenceConductorBase } from "../conductors/cq-conductor-base";
+import { NormalMap } from "../types/primary-types";
+import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
+
 // Sequence conductor builders are are a type of 'execution target', so like a unit function, they are
 //   included in the array (sequence) of execution targets that a sequence conductor iterates through at runtime.
 // They are effectively factories that produce sequence conductors when called upon to do so by a parent conductor. 
@@ -6,7 +13,7 @@
 //   This architecture also allows cquence to safely run the same virtual function multiple times concurrently.
     
 // Builder for a basic conductor that iterates through a sequence only once
-    class LinearSequenceConductorBuilder implements IConductorBuilder {
+export class LinearSequenceConductorBuilder implements IConductorBuilder {
         type: ConductorBuilderType.LINEAR;
         fnName: "composeFunction()";
         sequence: ExecutionTarget[];

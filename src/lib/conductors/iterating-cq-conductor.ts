@@ -1,4 +1,7 @@
-abstract class IteratingSequenceConductor extends SequenceConductorBase {
+import { SequenceConductorBase } from "./cq-conductor-base";
+import { utils } from "../utils/main-utils";
+
+export abstract class IteratingSequenceConductor extends SequenceConductorBase {
     break(): void {
         if (this._.runCompleted) {
             return;
