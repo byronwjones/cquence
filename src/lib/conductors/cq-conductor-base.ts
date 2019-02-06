@@ -6,6 +6,7 @@ import { UnitFunction } from "../types/secondary-types";
 import { IConductorBuilder } from "../interfaces/conductor-builder";
 import { ConductorInterface } from "../conductor-interfaces/conductor-ui"
 import { IteratingConductorInterface } from "../conductor-interfaces/iterating-conductor-ui"
+import { ForEachConductorInterface } from "../conductor-interfaces/foreach-conductor-ui";
 
 //Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of execution targets,
 //  coordinating which execution target to call,
@@ -44,7 +45,13 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
                     let fn = exeTarget as UnitFunction;
                     let uc: ConductorInterface;
                     if (utils.isAnIteratingSequenceConductor(this)) {
-                        uc = new IteratingConductorInterface(this, this._.iterationProperties);
+                        if(!!this._.iterationProperties &&
+                            !!this._.iterationProperties.$object) {
+                            uc = new ForEachConductorInterface(this, this._.iterationProperties);
+                        }
+                        else {
+                            uc = new IteratingConductorInterface(this);
+                        }
                     }
                     else {
                         uc = new ConductorInterface(this);
