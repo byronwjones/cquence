@@ -5,6 +5,6 @@ export interface IConductor {
     error: (exception?: string | Error) => void;
     next: () => void;
     return: (returnValue: any) => void;
-    update: (updateInfo: any) => void
+    update: (updateInfo: any) => void;
     [key: string]: any;
 }
