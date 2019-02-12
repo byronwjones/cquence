@@ -7,6 +7,10 @@
         "outDir": "./dist/esm/"
     },
     "files": [
-      "./src/lib/index.ts"
+      "./src/lib/**/*.ts"
+    ],
+    "exclude": [
+        "./src/lib/interfaces/*.ts",
+        "./src/lib/types/secondary-types.ts"
     ]
 }

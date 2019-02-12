@@ -1,5 +1,6 @@
 node_modules/
 test/spec/
 dist/esm
+dist/esm-min
 dist/umd
 .vscode/

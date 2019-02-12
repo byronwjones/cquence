@@ -1,8 +1,11 @@
-var gulp = require('./gulp')([
-    'browserify',
-    'html',
-    'serve'
-]);
+var tasks = [
+    {name: 'clean', deps: null},
+    {name: 'tsbuild', deps: ['clean']},
+    {name: 'esmmin', deps: ['tsbuild']},
+    {name: 'webpack', deps: ['tsbuild']}
+];
+var taskNames = tasks.map((t) => t.name);
 
-gulp.task('default', ['browserify', 'html', 'serve']);
-gulp.task('build', ['browserify', 'html']);
+var gulp = require('./gulp')(tasks);
+
+gulp.task('default', taskNames);

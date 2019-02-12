@@ -1,7 +1,10 @@
 {
   "name": "cquence",
   "version": "1.0.0",
-  "description": "Compose and invoke a logical sequence of JavaScript functions",
+  "description": "Compose and invoke a conditional, branching, and looping logical tree of JavaScript function sequences encapsulated in a single function.",
+  "main": "./dist/umd/cquence.jsn",
+  "module": "./dist/esm-min/index.jsn",
+  "types": "./dist/typings/index.d.tsn",
   "private": true,
   "repository": {
     "type": "github",
@@ -10,7 +13,15 @@
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "typescript": "^3.3.1"
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
+    "gulp-uglify-es": "^1.0.4",
+    "gulp-use-tsconfig": "^1.2.2",
+    "pump": "^3.0.0",
+    "typescript": "^3.3.1",
+    "webpack": "^4.29.3",
+    "webpack-stream": "^5.2.1"
   },
   "dependencies": {}
 }
