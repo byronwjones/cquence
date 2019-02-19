@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es2015",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "outDir": "./test/spec"
+    },
+    "files": [
+      "./src/**/*.ts"
+    ],
+    "exclude": [
+        "./src/lib/interfaces/*.ts",
+        "./src/lib/types/secondary-types.ts",
+        "./src/lib/index.ts"
+    ]
+}

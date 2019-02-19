@@ -1,6 +1,7 @@
 import {describe} from 'mocha';
 import { expect } from 'chai';
 import { utils } from '../lib/utils/main-utils';
+import { ValueTransform } from '../lib/enums/value-transform';
 
 describe('General Utility Objects', () => {
     describe('Main Utilities', () => {
@@ -129,7 +130,7 @@ describe('General Utility Objects', () => {
                 });
                 result += " ]";
 
-                expect(result).to.equal('{ 0:x 1:y 2:z }');
+                expect(result).to.equal('[ 0:x 1:y 2:z ]');
             });
             it('should iterate over the characters in a string', () => {
                 let result:string[] = [];
@@ -152,6 +153,41 @@ describe('General Utility Objects', () => {
                 result += " }";
 
                 expect(result).to.equal('{ a:x b:y }');
+            });
+        });
+        describe('isAnIteratingSequenceConductor', () => {
+            it('should only return true if the given object has a signature that would suggest it is an IteratingSequenceConductor', () => {
+                let vISequenceConductor = utils.isAnIteratingSequenceConductor({
+                    break: function(){},
+                    continue: function(){}
+                });
+                let vObject = utils.isAnIteratingSequenceConductor({});
+
+                expect(vISequenceConductor, 'an object with a signature similar to an ISC should return true').to.be.true;
+                expect(vObject, 'an empty map (object) should return false').to.be.false;
+            });
+        });
+        describe('parsePropertyString', () => {
+            it('should throw an error if the input string is improperly formatted', () => {
+                expect(utils.parsePropertyString.bind(utils, 'a..b')).to
+                    .throw("Improperly formed property string 'a..b' could not be parsed.");
+            });
+            it('should correctly interpret a properly formatted string', () => {
+                let result = utils.parsePropertyString('a.bc.d%%%..e f g');
+                
+                expect(result.propertyChain[0]).to.equal('a', 'incorrect value at index 0');
+                expect(result.propertyChain[1]).to.equal('bc', 'incorrect value at index 1');
+                expect(result.propertyChain[2]).to.equal('d%.', 'incorrect value at index 2');
+                expect(result.propertyChain[3]).to.equal('e f g', 'incorrect value at index 3');
+            });
+            it('should correctly specify if/how to convert the property path value to Boolean', () => {
+                let vNoConvert = utils.parsePropertyString('a.b.c').valueTransform;
+                let vConvert = utils.parsePropertyString('!!a.b.c').valueTransform;
+                let vConvertAndInvert = utils.parsePropertyString('!a.b.c').valueTransform;
+                
+                expect(vNoConvert).to.equal(ValueTransform.none, "'a.b.c' should have ValueTransform.none");
+                expect(vConvert).to.equal(ValueTransform.toBoolean, "'!!a.b.c' should have ValueTransform.toBoolean");
+                expect(vConvertAndInvert).to.equal(ValueTransform.toInvertedBoolean, "'!a.b.c' should have ValueTransform.toInvertedBoolean");
             });
         });
     });

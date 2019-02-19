@@ -121,7 +121,7 @@ let utils = (function(){
             if (this.isString(value)) {
                 let str = value as string;
                 if (this.isNullOrWhiteSpace(str)) {
-                    throw new Error('Strings used to resolve property values on the variables object cannot be empty');
+                    throw new Error('Strings used to resolve property values on the lets object cannot be empty');
                 }
     
                 let propertyInfo = this.parsePropertyString(str);
@@ -179,11 +179,11 @@ let utils = (function(){
             return objToUpdate;
         }
     
-        private parsePropertyString (s:string): IPropertyInfo {
+        parsePropertyString (s:string): IPropertyInfo {
             if (this.isNullOrWhiteSpace(s)) {
                 throw new Error('Property strings can not be empty or contain only whitespace characters.');
             }
-            let errMsg = 'Improperly formed property string "' + s + '" could not be parsed.';
+            let errMsg = `Improperly formed property string '${s}' could not be parsed.`;
     
             //make use of unescaped exclamation points for inversion
             let invertResult = s.match(/^!+/);
