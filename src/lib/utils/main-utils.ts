@@ -50,6 +50,10 @@ let utils = (function(){
         }
     
         getKeys (obj:Object): string[] {
+            if(this.isNullOrUndefined(obj)){
+                return [];
+            }
+
             if (this.isFunction(Object.keys)) {
                 return Object.keys(obj);
             }
@@ -66,21 +70,23 @@ let utils = (function(){
     
         foreach (target:string | NormalMap | any[],
                     fn:(value?:any, index?:any, obj?:any)=>any):void {
+            if(this.isNullOrUndefined(target)) {
+                return;
+            }
+
             let type:string = this.isArray(target) ? 'array' :
                 this.isString(target) ? 'string' : 'object';
     
             if (type === 'array') {
                 let arr = target as Array<any>;
                 for (let i = 0, ln = arr.length; i < ln; i++) {
-                    if (fn(arr[i], i, arr) === false)
-                        break;
+                    if (fn(arr[i], i, arr) === false) { break; }
                 }
             } 
             else if (type === 'string') {
                 let str = target as string;
                 for (let i = 0, ln = str.length; i < ln; i++) {
-                    if (fn(str.charAt(i), i, str) === false)
-                        break;
+                    if (fn(str.charAt(i), i, str) === false) { break; }
                 }
             } //object
             else {
@@ -88,8 +94,7 @@ let utils = (function(){
                 let keys = this.getKeys(obj);
                 for (let i = 0, ln = keys.length; i < ln; i++) {
                     let prop = keys[i];
-                    if (fn(obj[prop], prop, obj) === false)
-                        break;
+                    if (fn(obj[prop], prop, obj) === false) { break; }
                 }
             }
         }
