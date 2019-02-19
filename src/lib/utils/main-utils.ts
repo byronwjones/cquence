@@ -134,7 +134,7 @@ let utils = (function(){
                     //problem if parent is null/undefined
                     if (self.isNullOrUndefined(parent)) {
                         let pValue = self.isNull(parent) ? 'null' : 'undefined';
-                        let errMsg = 'Value of property ' + varName + ' is ' + pValue + ', and therefore does not have property "' + prop + '"';
+                        let errMsg = `Value of property '${varName}' is ${pValue}, and therefore does not have property '${prop}'`;
                         throw new Error(errMsg);
                     }
                     //get new parent value

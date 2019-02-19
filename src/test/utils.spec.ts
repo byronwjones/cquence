@@ -190,6 +190,65 @@ describe('General Utility Objects', () => {
                 expect(vConvertAndInvert).to.equal(ValueTransform.toInvertedBoolean, "'!a.b.c' should have ValueTransform.toInvertedBoolean");
             });
         });
+        describe('resolveSequencePredicate', () => {
+            it('when the predicate is a primitive value, should return the same primitive value', () => {
+                let result = utils.resolveSequencePredicate(100, {}, true);
+
+                expect(result).to.equal(100);
+            });
+            it('should throw an error if the predicate given resolves to a primitive, and AllowPrimitives is set to false', () => {
+                expect(utils.resolveSequencePredicate.bind(utils, 100, {}, false))
+                    .to.throw('Value provided for evaluation must be either an Array, a non-primitive Object, or a function that returns one of the preceding');
+            });
+            it('should throw an error if an empty or whitespace-only string is used as a predicate', () => {
+                expect(utils.resolveSequencePredicate.bind(utils, '', {}, true))
+                    .to.throw('Strings used to resolve property values on the lets object cannot be empty');
+            });
+            it('when the predicate is a string, should use that string to get a property on the lets object\'s value', () => {
+                let lets = {
+                    a: {
+                        b: {
+                            c: 100
+                        }
+                    }
+                };
+                let result = utils.resolveSequencePredicate('a.b.c', lets, true);
+
+                expect(result).to.equal(100);
+            });
+            it('when the predicate is a function, should return the value returned from that function', () => {
+                let result = utils.resolveSequencePredicate(function predicate(){
+                    return 100;
+                }, {}, true);
+
+                expect(result).to.equal(100);
+            });
+            it('when the predicate is a function returning a string, should use that string to get a property on the lets object\'s value', () => {
+                let lets = {
+                    a: {
+                        b: {
+                            c: 100
+                        }
+                    }
+                };
+                let result = utils.resolveSequencePredicate(function predicate(){
+                    return 'a.b.c';
+                }, lets, true);
+
+                expect(result).to.equal(100);
+            });
+            it('should throw an error if a predicate string references a child of a null/undefined property', () => {
+                let lets = {
+                    a: {} as any
+                };
+                lets.a['100% crazy property name.'] = {
+                    c: {}
+                };
+
+                expect(utils.resolveSequencePredicate.bind(utils, 'a.100%% crazy property name%..c.d.e', lets, true))
+                    .to.throw('Value of property \'lets.a["100% crazy property name."].c.d\' is undefined, and therefore does not have property \'e\'');
+            });
+        });
     });
 
     describe('Conductor Interface Utilities', () => {});
