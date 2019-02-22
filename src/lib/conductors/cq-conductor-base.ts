@@ -13,7 +13,7 @@ import { ForEachConductorInterface } from "../conductor-interfaces/foreach-condu
 //  and when to yield control of the virtual function flow to a parent sequence conductor
 
 export abstract class SequenceConductorBase implements ISequenceConductor {
-    _: ISequenceConductorInternals
+    protected _: ISequenceConductorInternals
 
     abstract _onRunComplete(ok: boolean, feedback?: any): void
 

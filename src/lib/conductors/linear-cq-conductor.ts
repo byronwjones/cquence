@@ -8,7 +8,7 @@ export class LinearSequenceConductor extends SequenceConductorBase {
     constructor(executionTargets: ExecutionTarget[],
         parentConductor?: SequenceConductorBase,
         args?: NormalMap,
-        success?: (value: any) => void,
+        success?: (value?: any) => void,
         error?: (errorDetail: string | Error) => void,
         update?: (updateDetail: any) => void,
         postSuccessOrFail?: () => void) {
@@ -27,16 +27,17 @@ export class LinearSequenceConductor extends SequenceConductorBase {
         }
     
         // set 'private' members
-        this._.parentConductor = parentConductor;
-        this._.executionTargets = executionTargets;
-        this._.success = success;
-        this._.error = error;
-        this._.update = update;
-        this._.finally = postSuccessOrFail;
-    
-        // set the initial state of the conductor
-        this._.currentExecutionTargetIndex = -1;
-        this._.runCompleted = false;
+        this._ = {
+            parentConductor: parentConductor,
+            executionTargets: executionTargets,
+            success: success,
+            error: error,
+            update: update,
+            finally: postSuccessOrFail,
+            // set the initial state of the conductor
+            currentExecutionTargetIndex: -1,
+            runCompleted: false
+        };
     }
 
     start(): void {

@@ -2,11 +2,13 @@ import {describe} from 'mocha';
 import { expect } from 'chai';
 import { utils } from '../lib/utils/main-utils';
 import { ValueTransform } from '../lib/enums/value-transform';
+import { Mocks } from './mock-repository';
+import { ucUtils } from '../lib/utils/conductor-ui-utils';
 
-describe('General Utility Objects', () => {
-    describe('Main Utilities', () => {
+describe('Utility Objects', () => {
+    describe('General Utilities', () => {
         describe('isNull', () => {
-            it('Should only return true if the given value is null', () => {
+            it('should only return true if the given value is null', () => {
                 let vNull = utils.isNull(null);
                 let vUndefined = utils.isNull(void 0);
                 let vNumber = utils.isNull(1);
@@ -17,7 +19,7 @@ describe('General Utility Objects', () => {
             });
         });
         describe('isUndefined', () => {
-            it('Should only return true if the given value is undefined', () => {
+            it('should only return true if the given value is undefined', () => {
                 let vNull = utils.isUndefined(null);
                 let vUndefined = utils.isUndefined(void 0);
                 let vNumber = utils.isUndefined(1);
@@ -28,7 +30,7 @@ describe('General Utility Objects', () => {
             });
         });
         describe('isNullOrUndefined', () => {
-            it('Should only return true if the given value is null or undefined', () => {
+            it('should only return true if the given value is null or undefined', () => {
                 let vNull = utils.isNullOrUndefined(null);
                 let vUndefined = utils.isNullOrUndefined(void 0);
                 let vNumber = utils.isNullOrUndefined(1);
@@ -249,8 +251,39 @@ describe('General Utility Objects', () => {
                     .to.throw('Value of property \'lets.a["100% crazy property name."].c.d\' is undefined, and therefore does not have property \'e\'');
             });
         });
+        describe('copyLetsObject', () => {
+            it('should return a shallow copy to the given map', () => {
+                let vOriginal = { a: 9, b: 8, c: 7 };
+                let vCopy = utils.copyLetsObject(vOriginal, {});
+
+                expect(vCopy.a).to.equal(9, 'incorrect value at property a');
+                expect(vCopy.b).to.equal(8, 'incorrect value at property b');
+                expect(vCopy.c).to.equal(7, 'incorrect value at property c');
+            });
+        });
+        describe('updateLetsObject', () => {
+            it('should update the properties in common of in the first object with values from the second', () => {
+                let vFirst:any = { a: 1, c: 2 };
+                let vSecond = { a: 9, b: 8, c: 7 };
+                utils.updateLetsObject(vFirst, vSecond);
+
+                expect(vFirst.a).to.equal(9, 'incorrect value at property a');
+                expect(vFirst.c).to.equal(7, 'incorrect value at property c');
+                expect(vFirst.b).to.be.undefined;
+            });
+        });
     });
 
-    describe('Conductor Interface Utilities', () => {});
+    describe('Conductor Interface Utilities', () => {
+        describe('getInterfaceInternals', () => {
+            it('should return the `private` members of a conductor interface', () => {
+                let conductor = Mocks.makeLinearSequenceConductor();
+                let ci = Mocks.makeConductorInterface(conductor);
+                let pvt = ucUtils.getInterfaceInternals(ci);
+
+                expect(pvt.sequenceConductor).to.equal(conductor);
+            });
+        });
+    });
 });
 

@@ -38,7 +38,7 @@ let ucUtils = (function(){
         yieldControl(conductorUI: IConductor): void {
             let itnal = this.getInterfaceInternals(conductorUI);
             itnal.hasControl = false;
-            // prevent further changes to the lets object from this interface by removing its reference to it
+            // prevent further changes to own properties of the lets object from this interface by removing its reference to it
             conductorUI.lets = null; 
         }
     }
