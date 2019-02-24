@@ -214,6 +214,7 @@ describe('Utility Objects', () => {
                         }
                     }
                 };
+
                 let result = utils.resolveSequencePredicate('a.b.c', lets, true);
 
                 expect(result).to.equal(100);
@@ -233,6 +234,7 @@ describe('Utility Objects', () => {
                         }
                     }
                 };
+
                 let result = utils.resolveSequencePredicate(function predicate(){
                     return 'a.b.c';
                 }, lets, true);
@@ -254,6 +256,7 @@ describe('Utility Objects', () => {
         describe('copyLetsObject', () => {
             it('should return a shallow copy to the given map', () => {
                 let vOriginal = { a: 9, b: 8, c: 7 };
+
                 let vCopy = utils.copyLetsObject(vOriginal, {});
 
                 expect(vCopy.a).to.equal(9, 'incorrect value at property a');
@@ -265,6 +268,7 @@ describe('Utility Objects', () => {
             it('should update the properties in common of in the first object with values from the second', () => {
                 let vFirst:any = { a: 1, c: 2 };
                 let vSecond = { a: 9, b: 8, c: 7 };
+
                 utils.updateLetsObject(vFirst, vSecond);
 
                 expect(vFirst.a).to.equal(9, 'incorrect value at property a');
@@ -279,11 +283,54 @@ describe('Utility Objects', () => {
             it('should return the `private` members of a conductor interface', () => {
                 let conductor = Mocks.makeLinearSequenceConductor();
                 let ci = Mocks.makeConductorInterface(conductor);
+
                 let pvt = ucUtils.getInterfaceInternals(ci);
 
                 expect(pvt.sequenceConductor).to.equal(conductor);
             });
         });
+        describe('yieldControl', () => {
+            it('should mark the given interface as no longer having control, and remove its lets object', () => {
+                let ci = Mocks.makeConductorInterface();
+                let pvt = ucUtils.getInterfaceInternals(ci);
+
+                ucUtils.yieldControl(ci);
+
+                expect(pvt.hasControl).to.be.false;
+                expect(ci.lets).to.be.null;
+            });
+        });
+        describe('validateCommandUsage', () => {
+            it('should return true when the interface has not yet yielded control', () => {
+                let ci = Mocks.makeConductorInterface();
+
+                let result = ucUtils.validateCommandUsage(ci, 'next');
+
+                expect(result).to.be.true;
+            });
+            it('should throw an error when the interface has already yielded control', () => {
+                let ci = Mocks.makeConductorInterface();
+                ucUtils.yieldControl(ci);
+
+                let fn = ucUtils.validateCommandUsage.bind(ucUtils, ci, 'next');
+
+                expect(fn).to.throw('Illegal call to function next(): This interface has already yielded control to the next execution target; no further calls are allowed to be made from this interface.');
+            });
+        });
+        describe('conductorInterfaceCommand', () => {
+            it('should invoke the function with the given name on the underlying sequence conductor', (done) => {
+                let conductor = Mocks.makeLinearSequenceConductor(Mocks.simpleSequence, null, {}, null, null,
+                function onUpdate (info: any){
+                    expect(info).to.equal('success');
+                    done();
+                });
+                let ci = Mocks.makeConductorInterface(conductor);
+
+                ucUtils.conductorInterfaceCommand(ci, false, 'update', 'success');
+            });
+        });
     });
 });
 
+let UtilsSpec = {};
+export { UtilsSpec };

@@ -16,7 +16,7 @@ import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
 export class LinearSequenceConductorBuilder implements IConductorBuilder {
         type: ConductorBuilderType.LINEAR;
         fnName: "composeFunction()";
-        sequence: ExecutionTarget[];
+        sequence: ExecutionTarget[] = [];
 
         add(executionTarget: ExecutionTarget): void {
             this.sequence.push(executionTarget);

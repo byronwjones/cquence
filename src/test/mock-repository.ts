@@ -65,6 +65,17 @@ let Mocks = (function(){
             
             return new ConductorInterface(conductor);
         }
+
+        isThisASequenceConductor(obj: any): boolean {
+            return !utils.isNullOrUndefined(obj) &&
+                   !utils.isNullOrUndefined(obj._) &&
+                    utils.isFunction(obj.start) &&
+                    utils.isFunction(obj._onRunComplete) &&
+                    utils.isFunction(obj.next) &&
+                    utils.isFunction(obj.error) &&
+                    utils.isFunction(obj.return) &&
+                    utils.isFunction(obj.update);
+        }
     };
 
     return new MockRepository();

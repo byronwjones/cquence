@@ -24,12 +24,11 @@ let ucUtils = (function(){
             itnal.sequenceConductor[command](arg);
         }
 
-        validateCommandUsage (conductorUI: IConductor, cmd: string): void {
+        validateCommandUsage (conductorUI: IConductor, cmd: string): boolean {
             let itnal = this.getInterfaceInternals(conductorUI);
-            if (itnal.hasControl) { return; } //OK to proceed with given command
+            if (itnal.hasControl) { return true; } //OK to proceed with given command
     
-            let msg = 'Illegal call to function ' + cmd +
-                    '(): this interface has already yielded control to the next execution target; no further calls are allowed to be made from this interface.';
+            let msg = `Illegal call to function ${cmd}(): This interface has already yielded control to the next execution target; no further calls are allowed to be made from this interface.`;
             //stop the sequence conductor from continuing to run
             itnal.sequenceConductor.error(msg);
             throw new Error(msg);
