@@ -76,6 +76,12 @@ let Mocks = (function(){
                     utils.isFunction(obj.return) &&
                     utils.isFunction(obj.update);
         }
+
+        isThisAnIteratingConductor(obj: any): boolean {
+            return this.isThisASequenceConductor(obj) &&
+                   utils.isFunction(obj.break) &&
+                   utils.isFunction(obj.continue);
+        }
     };
 
     return new MockRepository();

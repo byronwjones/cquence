@@ -12,11 +12,14 @@ export class WhileSequenceConductor extends IteratingSequenceConductor {
         super();
     
         //set private members
-        this._.parentConductor = parentConductor;
-        this._.executionTargets = executionTargets;
-        this._.predicate = predicate;
-        this._.doWhile = doWhile;
-        this._.runCompleted = false;
+        this._ = {
+            parentConductor: parentConductor,
+            executionTargets: executionTargets,
+            predicate: predicate,
+            doWhile: doWhile,
+            runCompleted: false,
+            currentExecutionTargetIndex: -1
+        };
     }
 
     start(): void {

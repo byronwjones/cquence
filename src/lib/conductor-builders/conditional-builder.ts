@@ -32,6 +32,11 @@ export class ConditionalSequenceConductorBuilder implements IConductorBuilder {
     }
 
     addCondition(predicate?:any): void{
+        //do not add any more conditions if the condition set is closed
+        if(this.isClosed) {
+            return;
+        }
+        
         //null or undefined predicate always indicates an else statement
         if (utils.isNullOrUndefined(predicate)) {
             predicate = true; //because else is always a true condition

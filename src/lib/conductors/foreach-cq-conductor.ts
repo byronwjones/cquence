@@ -10,17 +10,21 @@ export class ForEachSequenceConductor extends IteratingSequenceConductor {
                 predicate: any) {
         super();
     
-        this._.parentConductor = parentConductor;
-        this._.executionTargets = executionTargets;
-        this._.predicate = predicate;
-        this._.runCompleted = false;
-        this._.subjectKeyIndex = -1;
+        this._ = {
+            parentConductor: parentConductor,
+            executionTargets: executionTargets,
+            predicate: predicate,
+            runCompleted: false,
+            subjectKeyIndex: -1,
+            iterationSubject: null,
+            iterationSubjectKeys: null,
+            currentExecutionTargetIndex: -1
+        };
     
         this._.iterationSubject =
             utils.resolveSequencePredicate(predicate, parentConductor.lets, false);
         
         // get the keys (indices or object properties) this conductor will iterate over
-        this._.iterationSubjectKeys = null;
         if (utils.isArray(this._.iterationSubject)) {
             this._.iterationSubjectKeys = []; //for arrays keys are numbers
 
