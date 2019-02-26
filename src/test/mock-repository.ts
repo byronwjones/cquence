@@ -82,6 +82,47 @@ let Mocks = (function(){
                    utils.isFunction(obj.break) &&
                    utils.isFunction(obj.continue);
         }
+
+        isThisALinearCI(obj: any, strictCheck: boolean): boolean {
+            let isLinearCI = !utils.isNullOrUndefined(obj) &&
+                    utils.isFunction(obj.next) &&
+                    utils.isFunction(obj.error) &&
+                    utils.isFunction(obj.return) &&
+                    utils.isFunction(obj.update);
+
+            if(strictCheck) {
+                isLinearCI = isLinearCI &&
+                                utils.isUndefined(obj.continue) &&
+                                utils.isUndefined(obj.break) &&
+                                utils.isUndefined(obj.$key) &&
+                                utils.isUndefined(obj.$object) &&
+                                utils.isUndefined(obj.$item);
+            }
+
+            return isLinearCI;
+        }
+
+        isThisAnIteratingCI(obj: any, strictCheck: boolean): boolean {
+            let isIteratingCI = this.isThisALinearCI(obj, false) &&
+                                utils.isFunction(obj.continue) &&
+                                utils.isFunction(obj.break);
+
+            if(strictCheck) {
+                isIteratingCI = isIteratingCI &&
+                                utils.isUndefined(obj.$key) &&
+                                utils.isUndefined(obj.$object) &&
+                                utils.isUndefined(obj.$item);
+            }
+
+            return isIteratingCI;
+        }
+
+        isThisAForEachCI(obj: any): boolean {
+            return this.isThisAnIteratingCI(obj, false) &&
+                   !utils.isUndefined(obj.$key) &&
+                   !utils.isUndefined(obj.$object) &&
+                   !utils.isUndefined(obj.$item);
+        }
     };
 
     return new MockRepository();
