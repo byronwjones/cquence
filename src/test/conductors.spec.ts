@@ -8,7 +8,7 @@ import { WhileSequenceConductorBuilder } from '../lib/conductor-builders/while-b
 import { ConditionalSequenceConductorBuilder } from '../lib/conductor-builders/conditional-builder';
 
 describe('SequenceConductors', () => {
-    describe('Base Sequence Conductor Functionality', () => {
+    describe('Common Sequence Conductor Functions', () => {
         describe('next', () => {
             it('should cause the next execution target in a sequence to be invoked', (done) => {
                 let sequence = [
@@ -147,6 +147,84 @@ describe('SequenceConductors', () => {
                 let childConductor = Mocks.makeLinearSequenceConductor([], parentConductor);
 
                 childConductor.update('Updating...');
+            });
+        });
+    });
+    describe('Linear Sequence Conductor', () => {
+        describe('_onRunComplete', () => {
+            it('should cause the success callback to be invoked with the feedback argument when ok is true', (done) => {
+                let successCb = function(result: any){
+                    expect(result).to.equal('Success!');
+                    done();
+                };
+                let conductor = Mocks.makeLinearSequenceConductor([], null, {}, successCb);
+
+                conductor._onRunComplete(true, 'Success!');
+            });
+            it('should cause the error callback to be invoked with the feedback argument when ok is false', (done) => {
+                let errorCb = function(message: string){
+                    expect(message).to.equal('Error:(');
+                    done();
+                };
+                let conductor = Mocks.makeLinearSequenceConductor([], null, {}, null, errorCb);
+
+                conductor._onRunComplete(false, 'Error:(');
+            });
+            it('should cause the finally callback to be invoked on either success or error', (done) => {
+                var test: number = 0;
+                let successCb = function(result: any){
+                    test += 5;
+                };
+                let errorCb = function(result: any){
+                    test += 3;
+                };
+                let finallyCb = function() {
+                    if(test > 5) {
+                        expect(test).to.equal(8);
+                        done();
+                    }
+                }
+                let conductorA = Mocks.makeLinearSequenceConductor([], null, {}, successCb, errorCb, null, finallyCb);
+                let conductorB = Mocks.makeLinearSequenceConductor([], null, {}, successCb, errorCb, null, finallyCb);
+
+                conductorA._onRunComplete(true, null);
+                conductorB._onRunComplete(false, null);
+            });
+            it('should invoke the next execution target on a parent sequence when called on a child sequence', (done) => {
+                let sequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                let parentConductor = Mocks.makeLinearSequenceConductor(sequence, null, {});
+                let childConductor = Mocks.makeLinearSequenceConductor([], parentConductor);
+
+                childConductor._onRunComplete(true, null);
+            });
+            it('should ensure that variables declared in a child sequence do not `leak` out to the parent sequence', (done) => {
+                var calledParentUnitFunction = false;
+                let childSequence = [
+                    function(ci: IConductorInterface) {
+                        ci.lets.childVar = 'child';
+                    },
+                    function(ci: IConductorInterface) {
+                        expect(calledParentUnitFunction).to.be.false;
+                        expect(ci.lets.childVar).to.equal('child');
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        calledParentUnitFunction = true;
+                        expect(ci.lets.childVar).to.be.undefined;
+                        done();
+                    }
+                ];
+                let parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {});
+                let childConductor = Mocks.makeLinearSequenceConductor(childSequence, parentConductor);
+                childConductor.start();
+                childConductor.next();
+
+                childConductor._onRunComplete(true, null);
             });
         });
     });
