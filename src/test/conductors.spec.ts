@@ -6,6 +6,9 @@ import { IConductorInterface } from '../lib/interfaces/conductor-ui';
 import { ForEachSequenceConductorBuilder } from '../lib/conductor-builders/foreach-builder';
 import { WhileSequenceConductorBuilder } from '../lib/conductor-builders/while-builder';
 import { ConditionalSequenceConductorBuilder } from '../lib/conductor-builders/conditional-builder';
+import { WhileSequenceConductor } from '../lib/conductors/while-cq-conductor';
+import { ForEachSequenceConductor } from '../lib/conductors/foreach-cq-conductor';
+import { NormalMap } from '../lib/types/primary-types';
 
 describe('SequenceConductors', () => {
     describe('Common Sequence Conductor Functions', () => {
@@ -150,6 +153,46 @@ describe('SequenceConductors', () => {
             });
         });
     });
+    describe('Common Iterating Sequence Conductor Functions', () => {
+        describe('break', () => {
+            it('should invoke the next execution target on its parent sequence', (done) => {
+                let sequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                let parentConductor = Mocks.makeLinearSequenceConductor(sequence, null, {});
+                let iteratingConductor = new WhileSequenceConductor(parentConductor, [], true, false);
+
+                iteratingConductor.break();
+            });
+            it('should ensure that variables declared in an iterating sequence do not `leak` out to the parent sequence', (done) => {
+                var calledParentUnitFunction = false;
+                let iteratingSequence = [
+                    function(ci: IConductorInterface) {
+                        ci.lets.childVar = 'child';
+                    },
+                    function(ci: IConductorInterface) {
+                        expect(calledParentUnitFunction).to.be.false;
+                        expect(ci.lets.childVar).to.equal('child');
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        calledParentUnitFunction = true;
+                        expect(ci.lets.childVar).to.be.undefined;
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {});
+                var iteratingConductor = new ForEachSequenceConductor(parentConductor, iteratingSequence, [1]);
+                iteratingConductor.start();
+                iteratingConductor.next();
+
+                iteratingConductor.break();
+            });
+        });
+    });
     describe('Linear Sequence Conductor', () => {
         describe('_onRunComplete', () => {
             it('should cause the success callback to be invoked with the feedback argument when ok is true', (done) => {
@@ -225,6 +268,114 @@ describe('SequenceConductors', () => {
                 childConductor.next();
 
                 childConductor._onRunComplete(true, null);
+            });
+        });
+    });
+    describe('While Sequence Conductor', () => {
+        describe('_onRunComplete', () => {
+            it('should invoke the next execution target on its parent sequence when its predicate resolves to false', (done) => {
+                let sequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                let parentConductor = Mocks.makeLinearSequenceConductor(sequence, null, {});
+                let whileConductor = new WhileSequenceConductor(parentConductor, [], false, false);
+
+                whileConductor._onRunComplete(true);
+            });
+            it('should cause the conductor to traverse its sequence at least once when doWhile is true', (done) => {
+                let whileSequence = [
+                    function(ci: IConductorInterface) {
+                        ci.lets.whileTraversed = true;
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        expect(ci.lets.whileTraversed).to.be.true;
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {whileTraversed: false});
+                var whileConductor = new WhileSequenceConductor(parentConductor, whileSequence, false, true);
+                
+                whileConductor._onRunComplete(true); // should traverse sequence and set doWhile = false
+
+                expect(whileConductor._.doWhile).to.be.false;
+                whileConductor._onRunComplete(true); // now doWhile false and predicate false, should yield to parent
+            });
+            it('should cause the conductor to traverse its sequence again while the predicate still resolves to true', (done) => {
+                let whileSequence = [
+                    function(ci: IConductorInterface) {
+                        ci.lets.loopCount++;
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        expect(ci.lets.loopCount).to.equal(3);
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {loopCount: 0});
+                var whileConductor = new WhileSequenceConductor(parentConductor, whileSequence, function predicate(lets: NormalMap){
+                    return lets.loopCount < 3;
+                }, false);
+                whileConductor._onRunComplete(true); //loopCount === 0 (true)
+                whileConductor._onRunComplete(true); //loopCount === 1 (true)
+                whileConductor._onRunComplete(true); //loopCount === 2 (true)
+
+                whileConductor._onRunComplete(true); //loopCount === 3 (false; should stop here)
+            });
+            it('should ensure that variables declared in this sequence do not `leak` out to the parent sequence', (done) => {
+                var calledParentUnitFunction = false;
+                let whileSequence = [
+                    function(ci: IConductorInterface) {
+                        ci.lets.childVar = 'child';
+                    },
+                    function(ci: IConductorInterface) {
+                        expect(calledParentUnitFunction).to.be.false;
+                        expect(ci.lets.childVar).to.equal('child');
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        calledParentUnitFunction = true;
+                        expect(ci.lets.childVar).to.be.undefined;
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {});
+                var whileConductor = new WhileSequenceConductor(parentConductor, whileSequence, false, true);
+                whileConductor.start();
+                whileConductor.next();
+
+                whileConductor._onRunComplete(true);
+            });
+            it('should ensure that variables declared during one sequence traversal go out of scope in a subsequent traversal', (done) => {
+                let whileSequence = [
+                    function(ci: IConductorInterface) {
+                        expect(ci.lets.justDeclared).to.be.undefined;
+                        ci.lets.justDeclared = true;
+                    },
+                    function(ci: IConductorInterface) {
+                        expect(ci.lets.justDeclared).to.be.true;
+                        ci.lets.loopCount++;
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {loopCount: 0});
+                var whileConductor = new WhileSequenceConductor(parentConductor, whileSequence, 
+                    function(lets: NormalMap){ return lets.loopCount < 2; }, true);
+                whileConductor.start(); // loopCount === 0 (true)
+                whileConductor.next();
+                whileConductor._onRunComplete(true); // loopCount === 1 (true)
+                whileConductor.next();
+
+                whileConductor._onRunComplete(true); // loopCount === 2 (false, yields to parent sequence)
             });
         });
     });

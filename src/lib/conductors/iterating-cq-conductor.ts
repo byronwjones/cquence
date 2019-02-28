@@ -9,7 +9,7 @@ export abstract class IteratingSequenceConductor extends SequenceConductorBase {
 
         this._.runCompleted = true;
         // yield control to parent sequence conductor
-        utils.updateLetsObject(this._.parentConductor, this.lets);
+        utils.updateLetsObject(this._.parentConductor.lets, this.lets);
         this._.parentConductor.next();
     }
 
