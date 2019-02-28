@@ -379,6 +379,111 @@ describe('SequenceConductors', () => {
             });
         });
     });
+    describe('For Each Sequence Conductor', () => {
+        describe('_onRunComplete', () => {
+            it('should invoke the next execution target on its parent sequence when traversal has been performed for every collection item', (done) => {
+                let sequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                let parentConductor = Mocks.makeLinearSequenceConductor(sequence, null, {});
+                let foreachConductor = new ForEachSequenceConductor(parentConductor, [], []);
+
+                foreachConductor._onRunComplete(true);
+            });
+            it('should traverse its sequence for every item in a collection', (done) => {
+                let collection = { a: 'foo', b: 'bar', c: 'baz' };
+                let foreachSequence = [
+                    function(ci: IConductorInterface) {
+                        let l = ci.lets.loopCount;
+                        switch(ci.lets.loopCount){
+                            case 0:
+                                expect(foreachConductor._.iterationProperties.$key).to.equal('a');
+                                expect(foreachConductor._.iterationProperties.$item).to.equal('foo');
+                                expect(foreachConductor._.iterationProperties.$object).to.equal(collection);
+                            break;
+                            case 1:
+                                expect(foreachConductor._.iterationProperties.$key).to.equal('b');
+                                expect(foreachConductor._.iterationProperties.$item).to.equal('bar');
+                                expect(foreachConductor._.iterationProperties.$object).to.equal(collection);
+                            break;
+                            case 2:
+                                expect(foreachConductor._.iterationProperties.$key).to.equal('c');
+                                expect(foreachConductor._.iterationProperties.$item).to.equal('baz');
+                                expect(foreachConductor._.iterationProperties.$object).to.equal(collection);
+                            break;
+                            default:
+                                expect.fail('Sequence called too many times')
+                            break;
+                        }
+                        ci.lets.loopCount++;
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {loopCount: 0});
+                var foreachConductor = new ForEachSequenceConductor(parentConductor, foreachSequence, collection);
+                foreachConductor._onRunComplete(true); // a
+                foreachConductor._onRunComplete(true); // b
+                foreachConductor._onRunComplete(true); // c
+
+                foreachConductor._onRunComplete(true); // all items have been traversed, should stop here
+            });
+            it('should ensure that variables declared in this sequence do not `leak` out to the parent sequence', (done) => {
+                var calledParentUnitFunction = false;
+                let foreachSequence = [
+                    function(ci: IConductorInterface) {
+                        ci.lets.childVar = 'child';
+                    },
+                    function(ci: IConductorInterface) {
+                        expect(calledParentUnitFunction).to.be.false;
+                        expect(ci.lets.childVar).to.equal('child');
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        calledParentUnitFunction = true;
+                        expect(ci.lets.childVar).to.be.undefined;
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {});
+                var foreachConductor = new ForEachSequenceConductor(parentConductor, foreachSequence, [1]);
+                foreachConductor.start();
+                foreachConductor.next();
+
+                foreachConductor._onRunComplete(true);
+            });
+            it('should ensure that variables declared during one sequence traversal go out of scope in a subsequent traversal', (done) => {
+                let foreachSequence = [
+                    function(ci: IConductorInterface) {
+                        expect(ci.lets.justDeclared).to.be.undefined;
+                        ci.lets.justDeclared = true;
+                    },
+                    function(ci: IConductorInterface) {
+                        expect(ci.lets.justDeclared).to.be.true;
+                    }
+                ];
+                let parentSequence = [
+                    function(ci: IConductorInterface) {
+                        done();
+                    }
+                ];
+                var parentConductor = Mocks.makeLinearSequenceConductor(parentSequence, null, {loopCount: 0});
+                var whileConductor = new ForEachSequenceConductor(parentConductor, foreachSequence, [1, 2]);
+                whileConductor.start(); // index 0
+                whileConductor.next();
+                whileConductor._onRunComplete(true); // index 1
+                whileConductor.next();
+
+                whileConductor._onRunComplete(true); // all array members traversed, yields to parent sequence
+            });
+        });
+    });
 });
 
 let SequenceConductorsSpec = {};
