@@ -1,6 +1,6 @@
 import { LinearSequenceConductorBuilder } from "../conductor-builders/linear-builder";
 import { IConductorBuilder } from "../interfaces/conductor-builder";
-import { ExecutionTarget, CompositionFunction, VirtualFunction } from "../types/secondary-types";
+import { InvocationTarget, CompositionFunction, VirtualFunction } from "../types/secondary-types";
 import { WhileSequenceConductorBuilder } from "../conductor-builders/while-builder";
 import { NormalMap } from "../types/primary-types";
 import { utils } from "../utils/main-utils";
@@ -20,8 +20,8 @@ export class PrivateComposerAPI {
     currentBuilder: IConductorBuilder;
     builderStack: IConductorBuilder[];
 
-    getLastTargetOnCurrentBuilder(): ExecutionTarget {
-        //get the last execution target in the current builder's sequence
+    getLastTargetOnCurrentBuilder(): InvocationTarget {
+        //get the last invocation target in the current builder's sequence
         let cb = this.currentBuilder;
         if (!!cb.sequence) {
             return cb.sequence[cb.sequence.length - 1];
@@ -33,7 +33,7 @@ export class PrivateComposerAPI {
     }
 
     changeCurrentBuilder(builder: IConductorBuilder): IConductorBuilder {
-        // a new builder is always an execution target in the sequence of the previous current builder
+        // a new builder is always an invocation target in the sequence of the previous current builder
         //  -- it is its child
         this.currentBuilder.add(builder);
         this.builderStack.push(builder);

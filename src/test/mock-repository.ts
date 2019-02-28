@@ -1,6 +1,6 @@
 import { IConductorInterface } from "../lib/interfaces/conductor-ui";
 import { LinearSequenceConductor } from "../lib/conductors/linear-cq-conductor";
-import { ExecutionTarget } from "../lib/types/secondary-types";
+import { InvocationTarget } from "../lib/types/secondary-types";
 import { SequenceConductorBase } from "../lib/conductors/cq-conductor-base";
 import { NormalMap } from "../lib/types/primary-types";
 import { ConductorInterface } from "../lib/conductor-interfaces/conductor-ui";
@@ -26,16 +26,16 @@ let Mocks = (function(){
             ];
         }
 
-        makeLinearSequenceConductor(executionTargets?: ExecutionTarget[],
+        makeLinearSequenceConductor(InvocationTargets?: InvocationTarget[],
             parentConductor: SequenceConductorBase = null,
             args: NormalMap = {},
             success?: (value?: any) => void,
             error?: (errorDetail: string | Error) => void,
             update?: (updateDetail: any) => void,
             postSuccessOrFail?: () => void): LinearSequenceConductor {
-                executionTargets = executionTargets || this.simpleSequence;
+                InvocationTargets = InvocationTargets || this.simpleSequence;
 
-                return new LinearSequenceConductor(executionTargets,
+                return new LinearSequenceConductor(InvocationTargets,
                     parentConductor,
                     args,
                     success,

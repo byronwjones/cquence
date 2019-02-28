@@ -314,7 +314,7 @@ describe('Utility Objects', () => {
 
                 let fn = ucUtils.validateCommandUsage.bind(ucUtils, ci, 'next');
 
-                expect(fn).to.throw('Illegal call to function next(): This interface has already yielded control to the next execution target; no further calls are allowed to be made from this interface.');
+                expect(fn).to.throw('Illegal call to function next(): This interface has already yielded control to the next invocation target; no further calls are allowed to be made from this interface.');
             });
         });
         describe('conductorInterfaceCommand', () => {

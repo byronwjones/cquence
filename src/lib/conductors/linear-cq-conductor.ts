@@ -1,11 +1,11 @@
 import { SequenceConductorBase } from "./cq-conductor-base";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { NormalMap } from "../types/primary-types";
 import { utils } from "../utils/main-utils";
 
 export class LinearSequenceConductor extends SequenceConductorBase {
     
-    constructor(executionTargets: ExecutionTarget[],
+    constructor(InvocationTargets: InvocationTarget[],
         parentConductor?: SequenceConductorBase,
         args?: NormalMap,
         success?: (value?: any) => void,
@@ -29,13 +29,13 @@ export class LinearSequenceConductor extends SequenceConductorBase {
         // set 'private' members
         this._ = {
             parentConductor: parentConductor,
-            executionTargets: executionTargets,
+            InvocationTargets: InvocationTargets,
             success: success,
             error: error,
             update: update,
             finally: postSuccessOrFail,
             // set the initial state of the conductor
-            currentExecutionTargetIndex: -1,
+            currentInvocationTargetIndex: -1,
             runCompleted: false
         };
     }

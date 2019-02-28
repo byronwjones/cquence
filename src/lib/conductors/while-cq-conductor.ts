@@ -1,12 +1,12 @@
 import { IteratingSequenceConductor } from "./iterating-cq-conductor";
 import { SequenceConductorBase } from "./cq-conductor-base";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { utils } from "../utils/main-utils";
 
 export class WhileSequenceConductor extends IteratingSequenceConductor {
 
     constructor(parentConductor: SequenceConductorBase,
-                executionTargets: ExecutionTarget[],
+                InvocationTargets: InvocationTarget[],
                 predicate: any,
                 doWhile: boolean) {
         super();
@@ -14,11 +14,11 @@ export class WhileSequenceConductor extends IteratingSequenceConductor {
         //set private members
         this._ = {
             parentConductor: parentConductor,
-            executionTargets: executionTargets,
+            InvocationTargets: InvocationTargets,
             predicate: predicate,
             doWhile: doWhile,
             runCompleted: false,
-            currentExecutionTargetIndex: -1
+            currentInvocationTargetIndex: -1
         };
     }
 
@@ -27,7 +27,7 @@ export class WhileSequenceConductor extends IteratingSequenceConductor {
     }
 
     _onRunComplete(ok: boolean, feedback?: any): void {
-        this._.currentExecutionTargetIndex = -1;
+        this._.currentInvocationTargetIndex = -1;
         
         // the if statement is necessary because the lets object is null the first
         //  time this function is called.

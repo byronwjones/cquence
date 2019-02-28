@@ -1,6 +1,6 @@
 import { IConductorBuilder } from "../interfaces/conductor-builder";
 import { ConductorBuilderType } from "../enums/conductor-builder-type";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { SequenceConductorBase } from "../conductors/cq-conductor-base";
 import { WhileSequenceConductor } from "../conductors/while-cq-conductor";
 
@@ -16,12 +16,12 @@ export class WhileSequenceConductorBuilder implements IConductorBuilder {
     type: ConductorBuilderType.WHILE;
     fnName: string;
 
-    sequence: ExecutionTarget[];
+    sequence: InvocationTarget[];
     predicate: any;
     doWhile: boolean;
 
-    add(executionTarget: ExecutionTarget): void {
-        this.sequence.push(executionTarget);
+    add(InvocationTarget: InvocationTarget): void {
+        this.sequence.push(InvocationTarget);
     }
 
     build(parentConductor: SequenceConductorBase): SequenceConductorBase {

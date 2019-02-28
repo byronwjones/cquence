@@ -1,12 +1,12 @@
 import { IConductorBuilder } from "../interfaces/conductor-builder";
 import { ConductorBuilderType } from "../enums/conductor-builder-type";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { SequenceConductorBase } from "../conductors/cq-conductor-base";
 import { NormalMap } from "../types/primary-types";
 import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
 
-// Sequence conductor builders are are a type of 'execution target', so like a unit function, they are
-//   included in the array (sequence) of execution targets that a sequence conductor iterates through at runtime.
+// Sequence conductor builders are are a type of 'invocation target', so like a unit function, they are
+//   included in the array (sequence) of invocation targets that a sequence conductor iterates through at runtime.
 // They are effectively factories that produce sequence conductors when called upon to do so by a parent conductor. 
 //   This allows the newly created sequence conductor to run in context, and, as in the case of conductor builders
 //   for conditional sequences, allows cquence to decide at runtime whether or not a conductor's sequence should run at all.
@@ -16,10 +16,10 @@ import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
 export class LinearSequenceConductorBuilder implements IConductorBuilder {
         type: ConductorBuilderType.LINEAR;
         fnName: "composeFunction()";
-        sequence: ExecutionTarget[] = [];
+        sequence: InvocationTarget[] = [];
 
-        add(executionTarget: ExecutionTarget): void {
-            this.sequence.push(executionTarget);
+        add(InvocationTarget: InvocationTarget): void {
+            this.sequence.push(InvocationTarget);
         }
 
         build(parentConductor?: SequenceConductorBase,

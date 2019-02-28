@@ -8,8 +8,8 @@ import { ConductorInterface } from "../conductor-interfaces/conductor-ui"
 import { IteratingConductorInterface } from "../conductor-interfaces/iterating-conductor-ui"
 import { ForEachConductorInterface } from "../conductor-interfaces/foreach-conductor-ui";
 
-//Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of execution targets,
-//  coordinating which execution target to call,
+//Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of invocation targets,
+//  coordinating which invocation target to call,
 //  and when to yield control of the virtual function flow to a parent sequence conductor
 
 export abstract class SequenceConductorBase implements ISequenceConductor {
@@ -21,11 +21,11 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
 
     lets: NormalMap
 
-    // Determines if there is another unit function or child sequence (aka 'execution target'), to call
+    // Determines if there is another unit function or child sequence (aka 'invocation target'), to call
     //  within the sequence that this conductor manages.  If there is, it will either create
     //  the appropriate conductor interface for interaction with this conductor, passing it into and invoking a unit function,
     //  or it will create a child sequence conductor that will execute the child sequence.
-    //  If there are no more execution targets, this sequence conductor will
+    //  If there are no more invocation targets, this sequence conductor will
     //  yield runtime control to its parent sequence conductor (if it has one), or end the virtual function.
     next(): void {
         // do nothing if this sequence conductor is already done working
@@ -33,13 +33,13 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
             return;
         } 
 
-        this._.currentExecutionTargetIndex++;
+        this._.currentInvocationTargetIndex++;
         // perform the next task if possible
-        if (this._.currentExecutionTargetIndex < this._.executionTargets.length) {
-            let exeTarget = this._.executionTargets[this._.currentExecutionTargetIndex];
+        if (this._.currentInvocationTargetIndex < this._.InvocationTargets.length) {
+            let exeTarget = this._.InvocationTargets[this._.currentInvocationTargetIndex];
 
             try {
-                // execution target is a unit function
+                // invocation target is a unit function
                 if (utils.isFunction(exeTarget)) {
                     // create the correct type of conductor interface
                     let fn = exeTarget as UnitFunction;
@@ -60,14 +60,14 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
                     // execute unit function
                     fn(uc);
                 }
-                // execution target is a child sequence --
+                // invocation target is a child sequence --
                 //  use the conductor builder to create a sequence conductor
                 else {
                     let bc = (<IConductorBuilder>exeTarget).build(this);
                     // pass control to the created sequence conductor.
                     // Note that if the conductor builder decided not to create a conductor
                     //  (which is something that happens when none of the conditions in a conditional builder resolve to true)
-                    //  it will return a null conductor. When this happens, we just move on to the next execution target
+                    //  it will return a null conductor. When this happens, we just move on to the next invocation target
                     //  in the sequence.
                     if(!!bc){
                         bc.start();

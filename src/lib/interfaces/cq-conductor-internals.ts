@@ -1,11 +1,11 @@
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { ISequenceConductor } from "./cq-conductor";
 import { IIterationProperties } from "./iteration-properties";
 
 export interface ISequenceConductorInternals {
     runCompleted: boolean;
-    currentExecutionTargetIndex: number;
-    executionTargets: Array<ExecutionTarget>;
+    currentInvocationTargetIndex: number;
+    InvocationTargets: Array<InvocationTarget>;
     parentConductor: ISequenceConductor;
     iterationProperties?: IIterationProperties;
     iterationSubject?: {[key: string]: any};

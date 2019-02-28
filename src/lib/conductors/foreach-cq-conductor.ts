@@ -1,24 +1,24 @@
 import { IteratingSequenceConductor } from "./iterating-cq-conductor";
 import { SequenceConductorBase } from "./cq-conductor-base";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { utils } from "../utils/main-utils";
 
 export class ForEachSequenceConductor extends IteratingSequenceConductor {
     
     constructor(parentConductor: SequenceConductorBase,
-                executionTargets: ExecutionTarget[],
+                InvocationTargets: InvocationTarget[],
                 predicate: any) {
         super();
     
         this._ = {
             parentConductor: parentConductor,
-            executionTargets: executionTargets,
+            InvocationTargets: InvocationTargets,
             predicate: predicate,
             runCompleted: false,
             subjectKeyIndex: -1,
             iterationSubject: null,
             iterationSubjectKeys: null,
-            currentExecutionTargetIndex: -1
+            currentInvocationTargetIndex: -1
         };
     
         this._.iterationSubject =
@@ -47,8 +47,8 @@ export class ForEachSequenceConductor extends IteratingSequenceConductor {
         //   on for this run
         this._.subjectKeyIndex++;
 
-        // reset to start iterating from the first execution target in the sequence
-        this._.currentExecutionTargetIndex = -1;
+        // reset to start iterating from the first invocation target in the sequence
+        this._.currentInvocationTargetIndex = -1;
 
         if (!!this.lets) {
             utils.updateLetsObject(this._.parentConductor.lets, this.lets);

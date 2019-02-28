@@ -1,7 +1,7 @@
 import { IConductorBuilder } from "../interfaces/conductor-builder";
 import { ConductorBuilderType } from "../enums/conductor-builder-type";
 import { IConditionalSequence } from "../interfaces/conditional-cq";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { utils } from "../utils/main-utils";
 import { SequenceConductorBase } from "../conductors/cq-conductor-base";
 import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
@@ -27,8 +27,8 @@ export class ConditionalSequenceConductorBuilder implements IConductorBuilder {
     conditions: IConditionalSequence[];
     isClosed: boolean;
 
-    add(executionTarget: ExecutionTarget): void {
-        this.currentCondition.sequence.push(executionTarget);
+    add(InvocationTarget: InvocationTarget): void {
+        this.currentCondition.sequence.push(InvocationTarget);
     }
 
     addCondition(predicate?:any): void{
@@ -54,7 +54,7 @@ export class ConditionalSequenceConductorBuilder implements IConductorBuilder {
             var self = this;
             
             //determine which sequence to use
-            let sequence: ExecutionTarget[];
+            let sequence: InvocationTarget[];
             utils.foreach(self.conditions, function (cond: IConditionalSequence) {
                 //the sequence associated with the first predicate that resolves to true is the one to use
                 if (!!utils.resolveSequencePredicate(cond.predicate, parentConductor.lets, true)) {
@@ -63,8 +63,8 @@ export class ConditionalSequenceConductorBuilder implements IConductorBuilder {
                 }
             });
 
-            // if there is no true condition sequence containing execution targets, don't return a conductor.
-            //  The parent conductor will move on to the next execution target in its sequence
+            // if there is no true condition sequence containing invocation targets, don't return a conductor.
+            //  The parent conductor will move on to the next invocation target in its sequence
             if (!sequence || sequence.length === 0) {
                 return null;
             }

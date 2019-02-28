@@ -1,6 +1,5 @@
 import {describe} from 'mocha';
 import { expect } from 'chai';
-import { utils } from '../lib/utils/main-utils';
 import { Mocks } from './mock-repository';
 import { IConductorInterface } from '../lib/interfaces/conductor-ui';
 import { ForEachSequenceConductorBuilder } from '../lib/conductor-builders/foreach-builder';
@@ -13,7 +12,7 @@ import { NormalMap } from '../lib/types/primary-types';
 describe('SequenceConductors', () => {
     describe('Common Sequence Conductor Functions', () => {
         describe('next', () => {
-            it('should cause the next execution target in a sequence to be invoked', (done) => {
+            it('should cause the next invocation target in a sequence to be invoked', (done) => {
                 let sequence = [
                     function step1(ci: IConductorInterface) { },
                     function step2(ci: IConductorInterface) {
@@ -155,7 +154,7 @@ describe('SequenceConductors', () => {
     });
     describe('Common Iterating Sequence Conductor Functions', () => {
         describe('break', () => {
-            it('should invoke the next execution target on its parent sequence', (done) => {
+            it('should invoke the next invocation target on its parent sequence', (done) => {
                 let sequence = [
                     function(ci: IConductorInterface) {
                         done();
@@ -233,7 +232,7 @@ describe('SequenceConductors', () => {
                 conductorA._onRunComplete(true, null);
                 conductorB._onRunComplete(false, null);
             });
-            it('should invoke the next execution target on a parent sequence when called on a child sequence', (done) => {
+            it('should invoke the next invocation target on a parent sequence when called on a child sequence', (done) => {
                 let sequence = [
                     function(ci: IConductorInterface) {
                         done();
@@ -273,7 +272,7 @@ describe('SequenceConductors', () => {
     });
     describe('While Sequence Conductor', () => {
         describe('_onRunComplete', () => {
-            it('should invoke the next execution target on its parent sequence when its predicate resolves to false', (done) => {
+            it('should invoke the next invocation target on its parent sequence when its predicate resolves to false', (done) => {
                 let sequence = [
                     function(ci: IConductorInterface) {
                         done();
@@ -381,7 +380,7 @@ describe('SequenceConductors', () => {
     });
     describe('For Each Sequence Conductor', () => {
         describe('_onRunComplete', () => {
-            it('should invoke the next execution target on its parent sequence when traversal has been performed for every collection item', (done) => {
+            it('should invoke the next invocation target on its parent sequence when traversal has been performed for every collection item', (done) => {
                 let sequence = [
                     function(ci: IConductorInterface) {
                         done();

@@ -1,6 +1,6 @@
 import { IConductorBuilder } from "../interfaces/conductor-builder";
 import { ConductorBuilderType } from "../enums/conductor-builder-type";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { SequenceConductorBase } from "../conductors/cq-conductor-base";
 import { ForEachSequenceConductor } from "../conductors/foreach-cq-conductor";
 
@@ -14,11 +14,11 @@ export class ForEachSequenceConductorBuilder implements IConductorBuilder {
     type: ConductorBuilderType.FOREACH;
     fnName: "forEach()";
 
-    sequence: ExecutionTarget[];
+    sequence: InvocationTarget[];
     predicate: any;
 
-    add(executionTarget: ExecutionTarget): void {
-        this.sequence.push(executionTarget);
+    add(InvocationTarget: InvocationTarget): void {
+        this.sequence.push(InvocationTarget);
     }
 
     build(parentConductor: SequenceConductorBase): SequenceConductorBase {

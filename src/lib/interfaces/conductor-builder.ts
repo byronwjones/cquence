@@ -1,5 +1,5 @@
 import { NormalMap } from "../types/primary-types";
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 import { IConditionalSequence } from "./conditional-cq";
 import { ConductorBuilderType } from "../enums/conductor-builder-type";
 import { ISequenceConductor } from "./cq-conductor";
@@ -13,10 +13,10 @@ export interface IConductorBuilder {
     update?: (updateDetail: any) => void,
     postSuccessOrFail?: () => void) => SequenceConductorBase;
 
-    add: (executionTarget: ExecutionTarget) => void;
+    add: (InvocationTarget: InvocationTarget) => void;
 
     type: ConductorBuilderType;
     fnName: string;
-    sequence?: ExecutionTarget[];
+    sequence?: InvocationTarget[];
     currentCondition?: IConditionalSequence;
 }

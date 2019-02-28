@@ -49,7 +49,7 @@ export class Composer {
 
         var lastTarget = pvt.getLastTargetOnCurrentBuilder();
 
-        //the last execution target in the current builder must be an open conditional conductor builder to use this method
+        //the last invocation target in the current builder must be an open conditional conductor builder to use this method
         let conditionalBuilder = <ConditionalSequenceConductorBuilder>lastTarget;
         if (!conditionalBuilder || !conditionalBuilder.type ||
             conditionalBuilder.type !== ConductorBuilderType.CONDITIONAL) {
@@ -84,7 +84,7 @@ export class Composer {
 
         var lastTarget = pvt.getLastTargetOnCurrentBuilder();
 
-        //the last execution target in the current builder must be an open conditional conductor builder to use this method
+        //the last invocation target in the current builder must be an open conditional conductor builder to use this method
         let conditionalBuilder = <ConditionalSequenceConductorBuilder>lastTarget;
         if (!conditionalBuilder || !conditionalBuilder.type ||
             conditionalBuilder.type !== ConductorBuilderType.CONDITIONAL ||

@@ -1,6 +1,6 @@
-import { ExecutionTarget } from "../types/secondary-types";
+import { InvocationTarget } from "../types/secondary-types";
 
 export interface IConditionalSequence {
-    sequence: Array<ExecutionTarget>;
+    sequence: Array<InvocationTarget>;
     predicate: any;
 }

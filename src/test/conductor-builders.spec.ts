@@ -11,13 +11,13 @@ import { ForEachSequenceConductorBuilder } from '../lib/conductor-builders/forea
 describe('Sequence Conductor Builders', () => {
     describe('Linear Sequence Conductor Builder', () => {
         describe('add', () => {
-            it('should add an Execution Target to the sequence it is building', () => {
+            it('should add an invocation target to the sequence it is building', () => {
                 let builder = new LinearSequenceConductorBuilder();
                 let unitFn = function(ci: IConductorInterface){};
 
                 builder.add(unitFn);
 
-                expect(builder.sequence.length).to.equal(1, 'builder sequence should contain one execution target');
+                expect(builder.sequence.length).to.equal(1, 'builder sequence should contain one invocation target');
                 expect(builder.sequence[0]).to.equal(unitFn, 'builder sequence should contain the unit function added');
             });
         });
@@ -35,14 +35,14 @@ describe('Sequence Conductor Builders', () => {
     });
     describe('Conditional Sequence Conductor Builder', () => {
         describe('add', () => {
-            it('should add an Execution Target to the sequence for the condition it is currently building', () => {
+            it('should add an invocation target to the sequence for the condition it is currently building', () => {
                 let builder = new ConditionalSequenceConductorBuilder(true);
                 let unitFn = function(ci: IConductorInterface){};
 
                 builder.add(unitFn);
 
                 expect(builder.currentCondition.sequence.length)
-                    .to.equal(1, 'builder sequence should contain one execution target');
+                    .to.equal(1, 'builder sequence should contain one invocation target');
                 expect(builder.currentCondition.sequence[0])
                     .to.equal(unitFn, 'builder sequence should contain the unit function added');
             });
@@ -86,7 +86,7 @@ describe('Sequence Conductor Builders', () => {
                 let conductor = builder.build(Mocks.makeLinearSequenceConductor());
 
                 expect(Mocks.isThisASequenceConductor(conductor)).to.equal(true, 'object returned should be a sequence conductor');
-                expect(conductor._.executionTargets.length).to.equal(1, 'sequence should only have one execution target');
+                expect(conductor._.InvocationTargets.length).to.equal(1, 'sequence should only have one invocation target');
             });
             it('should create a conductor for the sequence of the 2nd condition when it is first to resolve to true', () => {
                 let builder = new ConditionalSequenceConductorBuilder(false);
@@ -102,7 +102,7 @@ describe('Sequence Conductor Builders', () => {
 
                 let conductor = builder.build(Mocks.makeLinearSequenceConductor());
 
-                expect(conductor._.executionTargets.length).to.equal(2, 'sequence should have 2 execution targets');
+                expect(conductor._.InvocationTargets.length).to.equal(2, 'sequence should have 2 invocation targets');
             });
             it('should create a conductor for the sequence of the else condition when all prior conditions resolve to false', () => {
                 let builder = new ConditionalSequenceConductorBuilder(false);
@@ -118,7 +118,7 @@ describe('Sequence Conductor Builders', () => {
 
                 let conductor = builder.build(Mocks.makeLinearSequenceConductor());
 
-                expect(conductor._.executionTargets.length).to.equal(3, 'sequence should have 3 execution targets');
+                expect(conductor._.InvocationTargets.length).to.equal(3, 'sequence should have 3 invocation targets');
             });
             it('should return null when none of the conditions provided resolve to true', () => {
                 let builder = new ConditionalSequenceConductorBuilder(false);
@@ -142,13 +142,13 @@ describe('Sequence Conductor Builders', () => {
     });
     describe('While Sequence Conductor Builder', () => {
         describe('add', () => {
-            it('should add an Execution Target to the sequence it is building', () => {
+            it('should add an invocation target to the sequence it is building', () => {
                 let builder = new WhileSequenceConductorBuilder(true, false);
                 let unitFn = function(ci: IConductorInterface){};
 
                 builder.add(unitFn);
 
-                expect(builder.sequence.length).to.equal(1, 'builder sequence should contain one execution target');
+                expect(builder.sequence.length).to.equal(1, 'builder sequence should contain one invocation target');
                 expect(builder.sequence[0]).to.equal(unitFn, 'builder sequence should contain the unit function added');
             });
         });
@@ -175,13 +175,13 @@ describe('Sequence Conductor Builders', () => {
     });
     describe('For Each Sequence Conductor Builder', () => {
         describe('add', () => {
-            it('should add an Execution Target to the sequence it is building', () => {
+            it('should add an invocation target to the sequence it is building', () => {
                 let builder = new ForEachSequenceConductorBuilder([]);
                 let unitFn = function(ci: IConductorInterface){};
 
                 builder.add(unitFn);
 
-                expect(builder.sequence.length).to.equal(1, 'builder sequence should contain one execution target');
+                expect(builder.sequence.length).to.equal(1, 'builder sequence should contain one invocation target');
                 expect(builder.sequence[0]).to.equal(unitFn, 'builder sequence should contain the unit function added');
             });
         });
