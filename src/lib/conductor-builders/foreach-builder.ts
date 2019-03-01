@@ -11,8 +11,8 @@ export class ForEachSequenceConductorBuilder implements IConductorBuilder {
         this.predicate = predicate;
     }
 
-    type: ConductorBuilderType.FOREACH;
-    fnName: "forEach()";
+    type: ConductorBuilderType = ConductorBuilderType.FOREACH;
+    fnName: string = "forEach()";
 
     sequence: InvocationTarget[];
     predicate: any;

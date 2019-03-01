@@ -9,7 +9,7 @@ import { WhileSequenceConductor } from '../lib/conductors/while-cq-conductor';
 import { ForEachSequenceConductor } from '../lib/conductors/foreach-cq-conductor';
 import { NormalMap } from '../lib/types/primary-types';
 
-describe('SequenceConductors', () => {
+describe('Sequence Conductors', () => {
     describe('Common Sequence Conductor Functions', () => {
         describe('next', () => {
             it('should cause the next invocation target in a sequence to be invoked', (done) => {

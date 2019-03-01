@@ -20,7 +20,7 @@ export class ConditionalSequenceConductorBuilder implements IConductorBuilder {
         this.isClosed = false;
     }
 
-    type: ConductorBuilderType.CONDITIONAL;
+    type: ConductorBuilderType = ConductorBuilderType.CONDITIONAL;
     fnName: string;
 
     currentCondition: IConditionalSequence;

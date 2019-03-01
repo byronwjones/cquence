@@ -14,8 +14,8 @@ import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
     
 // Builder for a basic conductor that iterates through a sequence only once
 export class LinearSequenceConductorBuilder implements IConductorBuilder {
-        type: ConductorBuilderType.LINEAR;
-        fnName: "composeFunction()";
+        type: ConductorBuilderType = ConductorBuilderType.LINEAR;
+        fnName:string = "composeFunction()";
         sequence: InvocationTarget[] = [];
 
         add(InvocationTarget: InvocationTarget): void {

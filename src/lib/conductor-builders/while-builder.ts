@@ -13,7 +13,7 @@ export class WhileSequenceConductorBuilder implements IConductorBuilder {
         this.fnName = doWhile ? "doWhile()" : "while()";
     }
 
-    type: ConductorBuilderType.WHILE;
+    type: ConductorBuilderType = ConductorBuilderType.WHILE;
     fnName: string;
 
     sequence: InvocationTarget[];

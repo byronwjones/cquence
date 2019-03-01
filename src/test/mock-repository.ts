@@ -6,6 +6,7 @@ import { NormalMap } from "../lib/types/primary-types";
 import { ConductorInterface } from "../lib/conductor-interfaces/conductor-ui";
 import { ISequenceConductor } from "../lib/interfaces/cq-conductor";
 import { utils } from "../lib/utils/main-utils";
+import { ConductorBuilderType } from "../lib/enums/conductor-builder-type";
 
 let Mocks = (function(){
     class MockRepository {
@@ -122,6 +123,23 @@ let Mocks = (function(){
                    !utils.isUndefined(obj.$key) &&
                    !utils.isUndefined(obj.$object) &&
                    !utils.isUndefined(obj.$item);
+        }
+
+        isThisABuilder(obj: any): boolean {
+            return utils.isFunction(obj.add) &&
+                   utils.isFunction(obj.build) &&
+                   !utils.isUndefined(obj.type) &&
+                   !utils.isUndefined(obj.fnName);
+        }
+
+        isThisAWhileBuilder(obj: any): boolean {
+            let validFnName = !!obj.fnName &&
+                                (obj.fnName === 'doWhile()' ||
+                                obj.fnName === 'while()');
+
+            return this.isThisABuilder(obj) &&
+                   validFnName &&
+                   obj.type === ConductorBuilderType.WHILE;
         }
     };
 
