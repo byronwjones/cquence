@@ -1,3 +1,4 @@
+import { describe } from 'mocha';
 import { PrivateComposerAPI } from "../lib/composer/private-api";
 import { Composer } from "../lib/composer/composer";
 import { IConductorInterface } from "../lib/interfaces/conductor-ui";
@@ -7,7 +8,7 @@ import { LinearSequenceConductorBuilder } from "../lib/conductor-builders/linear
 import { Mocks } from "./mock-repository";
 import { WhileSequenceConductorBuilder } from "../lib/conductor-builders/while-builder";
 import { utils } from "../lib/utils/main-utils";
-import { ConductorBuilderType } from "../lib/enums/conductor-builder-type";
+import { privado } from '../lib/types/primary-types';
 
 describe('Function Composition API', () => {
     describe('Private API Object', () => {
@@ -110,6 +111,102 @@ describe('Function Composition API', () => {
                 let fn = pvtAPI.compile();
 
                 expect(utils.isFunction(fn)).to.be.true;
+            });
+        });
+    });
+    describe('Composer API', () => {
+        describe('next', () => {
+            it('should add the given unit function to the sequence under construction and return the composer', () => {
+                let composer = new Composer();
+                let pvtAPI = composer[privado] as PrivateComposerAPI;
+                let unitFn = function (ci: IConductorInterface) { };
+
+                let retVal = composer.next(unitFn);
+                
+                expect(pvtAPI.currentBuilder.sequence.length).to.equal(1, 'incorrect number of invocation targets');
+                expect(pvtAPI.currentBuilder.sequence[0]).to.equal(unitFn, 'unit function should be added to sequence');
+                expect(retVal).to.equal(composer, 'composer instance was not returned');
+            });
+        });
+        describe('if', () => {
+            it('should add a Conditional Sequence Conductor Builder to the sequence under construction and return the composer', () => {
+                let composer = new Composer();
+                let pvtAPI = composer[privado] as PrivateComposerAPI;
+
+                let retVal = composer.if(true, function(c: Composer) {});
+                
+                expect(pvtAPI.currentBuilder.sequence.length).to.equal(1, 'incorrect number of invocation targets');
+                expect(Mocks.isThisACondiitionalBuilder(pvtAPI.currentBuilder.sequence[0])).to.be.true;
+                expect(retVal).to.equal(composer, 'composer instance was not returned');
+            });
+        });
+        describe('else', () => {
+            it('should add a condition to the preceding Conditional Sequence Conductor Builder and return the composer', () => {
+                let composer = new Composer();
+                let pvtAPI = composer[privado] as PrivateComposerAPI;
+                composer.if(true, function(c: Composer) {});
+
+                let retVal = composer.else(function(c: Composer) {});
+                
+                expect(pvtAPI.currentBuilder.sequence.length).to.equal(1, 'incorrect number of invocation targets');
+                let builder = pvtAPI.currentBuilder.sequence[0] as ConditionalSequenceConductorBuilder;
+                expect(builder.conditions.length).to.equal(2, 'incorrect number of conditions in conditional builder');
+                expect(retVal).to.equal(composer, 'composer instance was not returned');
+            });
+            it('should throw an error when not immediately preceded by a call to `if` or `elseIf`', () => {
+                let composer = new Composer();
+
+                let fn = composer.else.bind(composer, function(c: Composer) {});
+                
+                expect(fn).to.throw('An else() statement must be immediately preceded by an if() or elseIf() statement');
+            });
+        });
+        describe('elseIf', () => {
+            it('should add a condition to the preceding Conditional Sequence Conductor Builder and return the composer', () => {
+                let composer = new Composer();
+                let pvtAPI = composer[privado] as PrivateComposerAPI;
+                composer.if(true, function(c: Composer) {});
+
+                let retVal = composer.elseIf(true, function(c: Composer) {});
+                
+                expect(pvtAPI.currentBuilder.sequence.length).to.equal(1, 'incorrect number of invocation targets');
+                let builder = pvtAPI.currentBuilder.sequence[0] as ConditionalSequenceConductorBuilder;
+                expect(builder.conditions.length).to.equal(2, 'incorrect number of conditions in conditional builder');
+                expect(retVal).to.equal(composer, 'composer instance was not returned');
+            });
+            it('should throw an error when not immediately preceded by a call to `if` or `elseIf`', () => {
+                let composer = new Composer();
+
+                let fn = composer.elseIf.bind(composer, true, function(c: Composer) {});
+                
+                expect(fn).to.throw('An elseIf() statement must be preceded by an if() statement');
+                composer.if(true, function(c: Composer) {});
+                composer.else(function(c: Composer) {});
+                expect(fn).to.throw('An elseIf() statement is not allowed after an else() statement');
+            });
+        });
+        describe('forEach', () => {
+            it('should add a For Each Sequence Conductor Builder to the sequence under construction and return the composer', () => {
+                let composer = new Composer();
+                let pvtAPI = composer[privado] as PrivateComposerAPI;
+
+                let retVal = composer.forEach([], function(c: Composer) {});
+                
+                expect(pvtAPI.currentBuilder.sequence.length).to.equal(1, 'incorrect number of invocation targets');
+                expect(Mocks.isThisAForEachBuilder(pvtAPI.currentBuilder.sequence[0])).to.be.true;
+                expect(retVal).to.equal(composer, 'composer instance was not returned');
+            });
+        });
+        describe('while', () => {
+            it('should add a While Sequence Conductor Builder to the sequence under construction and return the composer', () => {
+                let composer = new Composer();
+                let pvtAPI = composer[privado] as PrivateComposerAPI;
+
+                let retVal = composer.while(true, function(c: Composer) {});
+                
+                expect(pvtAPI.currentBuilder.sequence.length).to.equal(1, 'incorrect number of invocation targets');
+                expect(Mocks.isThisAWhileBuilder(pvtAPI.currentBuilder.sequence[0])).to.be.true;
+                expect(retVal).to.equal(composer, 'composer instance was not returned');
             });
         });
     });

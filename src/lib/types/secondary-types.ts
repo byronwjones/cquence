@@ -9,6 +9,6 @@ export type CompositionFunction = (composer: Composer) => void;
 
 export type InvocationTarget = IConductorBuilder | UnitFunction;
 
-export type PromiseVirtualFunction = (args: NormalMap, update?: (updateDetail: any) => void) => PromiseLike<any>;
+export type PromiseVirtualFunction = (args?: NormalMap, update?: (updateDetail: any) => void) => PromiseLike<any>;
 export type CallbackVirtualFunction = (params?: ICallbackVirtualFunctionParameters) => void;
 export type VirtualFunction = PromiseVirtualFunction | CallbackVirtualFunction;

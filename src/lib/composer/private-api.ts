@@ -24,11 +24,21 @@ export class PrivateComposerAPI {
         //get the last invocation target in the current builder's sequence
         let cb = this.currentBuilder;
         if (!!cb.sequence) {
-            return cb.sequence[cb.sequence.length - 1];
+            if(cb.sequence.length === 0) {
+                return null;
+            }
+            else {
+                return cb.sequence[cb.sequence.length - 1];
+            }
         }
         else { //current builder is a conditional builder (the only builder without a sequence property)
             var cq = cb.currentCondition.sequence;
-            return cq[cq.length - 1];
+            if(cq.length === 0) {
+                return null;
+            }
+            else {
+                return cq[cq.length - 1];
+            }
         }
     }
 
@@ -62,7 +72,7 @@ export class PrivateComposerAPI {
         let me = this;
         // create a function that returns a Promise
         if (utils.isFunction(promiseConstructor)) {
-            fn = function (args: NormalMap, update: (updateDetail: any) => void) {
+            fn = function (args?: NormalMap, update?: (updateDetail: any) => void) {
                 return new promiseConstructor(function (resolve, reject) {
                     let builder = me.rootBuilder.build(null, args, resolve, reject, update);
                     builder.start(); //run virtual function

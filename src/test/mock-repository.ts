@@ -141,6 +141,29 @@ let Mocks = (function(){
                    validFnName &&
                    obj.type === ConductorBuilderType.WHILE;
         }
+
+        isThisACondiitionalBuilder(obj: any): boolean {
+            let validFnName = !!obj.fnName &&
+                                obj.fnName === 'if()';
+
+            return this.isThisABuilder(obj) &&
+                   utils.isFunction(obj.addCondition) &&
+                   !utils.isUndefined(obj.currentCondition) &&
+                   !utils.isUndefined(obj.conditions) &&
+                   !utils.isUndefined(obj.isClosed) &&
+                   validFnName &&
+                   obj.type === ConductorBuilderType.CONDITIONAL;
+        }
+
+        isThisAForEachBuilder(obj: any): boolean {
+            let validFnName = !!obj.fnName &&
+                                obj.fnName === 'forEach()';
+
+            return this.isThisABuilder(obj) &&
+                   !utils.isUndefined(obj.predicate) &&
+                   validFnName &&
+                   obj.type === ConductorBuilderType.FOREACH;
+        }
     };
 
     return new MockRepository();
