@@ -32,12 +32,12 @@ export class PrivateComposerAPI {
             }
         }
         else { //current builder is a conditional builder (the only builder without a sequence property)
-            var cq = cb.currentCondition.sequence;
-            if(cq.length === 0) {
+            let seq = cb.currentCondition.sequence;
+            if(seq.length === 0) {
                 return null;
             }
             else {
-                return cq[cq.length - 1];
+                return seq[seq.length - 1];
             }
         }
     }

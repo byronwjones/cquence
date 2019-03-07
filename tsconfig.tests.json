@@ -12,6 +12,7 @@
     "exclude": [
         "./src/lib/interfaces/*.ts",
         "./src/lib/types/secondary-types.ts",
-        "./src/lib/index.ts"
+        "./src/lib/index.ts",
+        "./src/lib/**/*.es3.ts"
     ]
 }

@@ -253,4 +253,5 @@ let utils = (function(){
     return new Utils();
 })();
 
+// @inlinify:startOmit
 export {utils};
