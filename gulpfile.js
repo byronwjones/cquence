@@ -1,5 +1,5 @@
 var tasks = [
-    {name: 'es3link', deps: null},
+    {name: 'tslink', deps: null},
     /*{name: 'clean', deps: null},
     {name: 'tsbuild', deps: ['clean']},
     {name: 'esmmin', deps: ['tsbuild']},

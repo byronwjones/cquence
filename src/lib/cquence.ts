@@ -4,10 +4,10 @@ import { Composer } from "./composer/composer";
 import { privado } from "./types/primary-types";
 import { PrivateComposerAPI } from "./composer/private-api";
 
-// @inlinify:write let lib = (function(){
-// @inlinify:startOmit
+// @tslink:emit let lib = (function(){
+// @tslink:startOmit
 let cq = (function(){
-// @inlinify:endOmit
+// @tslink:endOmit
     class Cquence {
     
         composeFunction (compositionFn: CompositionFunction, promiseConstructor?: PromiseConstructorLike): VirtualFunction {
@@ -26,5 +26,4 @@ let cq = (function(){
     return new Cquence();
 })();
 
-// @inlinify:startOmit
 export {cq};

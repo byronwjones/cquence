@@ -1,10 +1,10 @@
 const gulp = require('gulp');
-const linker = require('./inlinify');
+const tslink = require('gulp-ts-link');
  
-const tsMain = './src/lib/index.es3.ts';
+const tsMain = './src/lib/index.tslink.ts';
 
 module.exports = function () {
     return gulp.src(tsMain, {buffer: false})
-        .pipe(linker())
+        .pipe(tslink())
         .pipe(gulp.dest('./src/lib/temp'));
 };
