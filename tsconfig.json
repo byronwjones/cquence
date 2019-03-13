@@ -10,6 +10,7 @@
       "./src/lib/**/*.ts"
     ],
     "exclude": [
+        "./src/lib/temp/*",
         "./src/lib/interfaces/*.ts",
         "./src/lib/types/secondary-types.ts",
         "./src/lib/**/*.es3.ts"

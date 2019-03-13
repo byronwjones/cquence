@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "none",
+        "target": "es3",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "outDir": "./dist/es3/"
+    },
+    "files": [
+      "./src/lib/temp/cquence.ts"
+    ]
+}

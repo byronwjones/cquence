@@ -6,6 +6,6 @@ const tsConfigFile = './tsconfig.json';
 module.exports = function () {
     return gulp.src('./test/spec/test/index.spec.js', {read: false})
         .pipe(mocha({
-            compilers: 'js:@babel/register'
+            require: '@babel/register'
         }));
 };

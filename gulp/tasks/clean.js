@@ -1,10 +1,10 @@
- // Remoce all .js; .map and .d.ts files
+ // Remove all .js; .map and .d.ts files
 
 const gulp = require('gulp');
 const clean = require('gulp-clean');
 
 module.exports = function () {
-    gulp.src(['./dist/esm', './dist/esm-min', './dist/umd', './test/spec'], {read: false})
+    gulp.src(['./dist/esm', './dist/esm-min', './dist/umd', './dist/es3', './test/spec', './src/lib/temp'], {read: false})
         .pipe(clean());
     
     return gulp;

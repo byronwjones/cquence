@@ -5,6 +5,6 @@ const tsMain = './src/lib/index.tslink.ts';
 
 module.exports = function () {
     return gulp.src(tsMain, {buffer: false})
-        .pipe(tslink())
+        .pipe(tslink('cquence.ts'))
         .pipe(gulp.dest('./src/lib/temp'));
 };
