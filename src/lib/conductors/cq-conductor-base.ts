@@ -8,9 +8,9 @@ import { ConductorInterface } from "../conductor-interfaces/conductor-ui"
 import { IteratingConductorInterface } from "../conductor-interfaces/iterating-conductor-ui"
 import { ForEachConductorInterface } from "../conductor-interfaces/foreach-conductor-ui";
 
-//Sequence conductors manage the flow of the virtual function. It contains an array (sequence) of invocation targets,
+//Sequence conductors manage the flow of the composed function. It contains an array (sequence) of invocation targets,
 //  coordinating which invocation target to call,
-//  and when to yield control of the virtual function flow to a parent sequence conductor
+//  and when to yield control of the composed function flow to a parent sequence conductor
 
 export abstract class SequenceConductorBase implements ISequenceConductor {
     _: ISequenceConductorInternals
@@ -26,7 +26,7 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
     //  the appropriate conductor interface for interaction with this conductor, passing it into and invoking a unit function,
     //  or it will create a child sequence conductor that will execute the child sequence.
     //  If there are no more invocation targets, this sequence conductor will
-    //  yield runtime control to its parent sequence conductor (if it has one), or end the virtual function.
+    //  yield runtime control to its parent sequence conductor (if it has one), or end the composed function.
     next(): void {
         // do nothing if this sequence conductor is already done working
         if (this._.runCompleted) {
@@ -96,7 +96,7 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
             this._.runCompleted = true;
             this._.parentConductor.error(exception);
         }
-        // if no parent (this is the conductor for main sequence of the virtual function),
+        // if no parent (this is the conductor for main sequence of the composed function),
         //   call failure callback/reject Promise
         else { 
             this._onRunComplete(false, exception);
@@ -109,7 +109,7 @@ export abstract class SequenceConductorBase implements ISequenceConductor {
         }
 
         // If this sequence conductor has a parent, call return on it,
-        //  otherwise this is the conductor for the virtual function's main sequence
+        //  otherwise this is the conductor for the composed function's main sequence
         //  in which case call the success callback/fulfill the Promise
         if (!!this._.parentConductor) {
             this._.runCompleted = true;

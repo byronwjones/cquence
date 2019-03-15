@@ -1,4 +1,4 @@
-import { CompositionFunction, VirtualFunction } from "./types/secondary-types";
+import { CompositionFunction, ComposedFunction } from "./types/secondary-types";
 import { utils } from "./utils/main-utils";
 import { Composer } from "./composer/composer";
 import { privado } from "./types/primary-types";
@@ -10,7 +10,7 @@ let cq = (function(){
 // @tslink:endOmit
     class Cquence {
     
-        composeFunction (compositionFn: CompositionFunction, promiseConstructor?: PromiseConstructorLike): VirtualFunction {
+        composeFunction (compositionFn: CompositionFunction, promiseConstructor?: PromiseConstructorLike): ComposedFunction {
             if (!utils.isFunction(compositionFn)) {
                 throw new TypeError("First argument provided to composeFunction(compositionFunction, [PromiseConstructor]) must be a function");
             }

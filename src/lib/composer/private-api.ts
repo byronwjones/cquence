@@ -1,10 +1,10 @@
 import { LinearSequenceConductorBuilder } from "../conductor-builders/linear-builder";
 import { IConductorBuilder } from "../interfaces/conductor-builder";
-import { InvocationTarget, CompositionFunction, VirtualFunction } from "../types/secondary-types";
+import { InvocationTarget, CompositionFunction, ComposedFunction } from "../types/secondary-types";
 import { WhileSequenceConductorBuilder } from "../conductor-builders/while-builder";
 import { NormalMap } from "../types/primary-types";
 import { utils } from "../utils/main-utils";
-import { ICallbackVirtualFunctionParameters } from "../interfaces/callback-virtual-fn-params";
+import { ICallbackComposedFunctionParameters } from "../interfaces/callback-virtual-fn-params";
 import { Composer } from "./composer";
 
 export class PrivateComposerAPI {
@@ -67,28 +67,28 @@ export class PrivateComposerAPI {
         return this.self;
     }
 
-    compile (promiseConstructor?: PromiseConstructorLike): VirtualFunction {
-        let fn: VirtualFunction;
+    compile (promiseConstructor?: PromiseConstructorLike): ComposedFunction {
+        let fn: ComposedFunction;
         let me = this;
         // create a function that returns a Promise
         if (utils.isFunction(promiseConstructor)) {
             fn = function (args?: NormalMap, update?: (updateDetail: any) => void) {
                 return new promiseConstructor(function (resolve, reject) {
                     let builder = me.rootBuilder.build(null, args, resolve, reject, update);
-                    builder.start(); //run virtual function
+                    builder.start(); //run composed function
                 });
             };
         }
         else {  // function that uses callbacks for feedback
            
-            fn = function (objParams?: ICallbackVirtualFunctionParameters) {
+            fn = function (objParams?: ICallbackComposedFunctionParameters) {
                 //guarantee valid value
                 objParams = utils.isPrimitiveValue(objParams) ? {} : objParams;
 
                 // perform task with given parameters
                 let builder = me.rootBuilder.build(null, objParams.args, objParams.success,
                     objParams.error, objParams.update, objParams.completed);
-                builder.start(); //run virtual function
+                builder.start(); //run composed function
             };
         }
 

@@ -17,7 +17,7 @@ export class LinearSequenceConductor extends SequenceConductorBase {
         // Build the local scope of variables for the sequence managed by this instance.
         //  if it has a parent sequence, it inherits the variables from the parent's local scope
         //  otherwise, this is the function's main sequence, and its initial variables are any arguments
-        //  passed into the virtual function
+        //  passed into the composed function
         if (!!parentConductor) {
             this.lets = utils.copyLetsObject(parentConductor.lets, {});
         }

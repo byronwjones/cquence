@@ -10,7 +10,7 @@ import { LinearSequenceConductor } from "../conductors/linear-cq-conductor";
 // They are effectively factories that produce sequence conductors when called upon to do so by a parent conductor. 
 //   This allows the newly created sequence conductor to run in context, and, as in the case of conductor builders
 //   for conditional sequences, allows cquence to decide at runtime whether or not a conductor's sequence should run at all.
-//   This architecture also allows cquence to safely run the same virtual function multiple times concurrently.
+//   This architecture also allows cquence to safely run the same composed function multiple times concurrently.
     
 // Builder for a basic conductor that iterates through a sequence only once
 export class LinearSequenceConductorBuilder implements IConductorBuilder {

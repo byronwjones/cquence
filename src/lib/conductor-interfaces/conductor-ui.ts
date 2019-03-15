@@ -4,7 +4,7 @@ import { ucUtils } from "../utils/conductor-ui-utils";
 import { ISequenceConductor } from "../interfaces/cq-conductor";
 
 // Conductor interfaces are passed into unit functions, providing an API that temporarily exposes the methods
-//  on a sequence conductor, and provides access to the lets object - scoped variables local to the virtual function.
+//  on a sequence conductor, and provides access to the lets object - scoped variables local to the composed function.
 // The conductor interface ensures that unit functions can only cause the sequence conductor to move on to the
 //  next unit once -- after the unit function abdicates control, subsequent calls to the conductor interface's API
 //  will throw an error

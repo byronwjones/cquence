@@ -65,7 +65,7 @@ declare namespace Composer {
     }
 }
 
-interface IVirtualFunctionCallbackParameters {
+interface IComposedFunctionCallbackParameters {
     args?: NormalMap;
     success?: (value: any) => void;
     error?: (errorDetail: string | Error) => void;
@@ -73,10 +73,10 @@ interface IVirtualFunctionCallbackParameters {
     completed?: () => void
 }
 
-type PromiseVirtualFunction = (args: NormalMap, update?: (updateDetail: any) => void) => PromiseLike<any>;
-type CallbackVirtualFunction = (params?: IVirtualFunctionCallbackParameters) => void;
-type VirtualFunction = PromiseVirtualFunction | CallbackVirtualFunction;
+type PromiseComposedFunction = (args: NormalMap, update?: (updateDetail: any) => void) => PromiseLike<any>;
+type CallbackComposedFunction = (params?: IComposedFunctionCallbackParameters) => void;
+type ComposedFunction = PromiseComposedFunction | CallbackComposedFunction;
 
 declare namespace cq {
-    function composeFunction (compositionFn: CompositionFunction.Linear, promiseConstructor?: PromiseConstructorLike): VirtualFunction;
+    function composeFunction (compositionFn: CompositionFunction.Linear, promiseConstructor?: PromiseConstructorLike): ComposedFunction;
 }

@@ -1,6 +1,6 @@
 import { NormalMap } from "../types/primary-types";
 
-export interface ICallbackVirtualFunctionParameters {
+export interface ICallbackComposedFunctionParameters {
     args?: NormalMap;
     success?: (value: any) => void;
     error?: (errorDetail: string | Error) => void;

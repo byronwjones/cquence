@@ -3,12 +3,12 @@ import { expect } from "chai";
 import { cq } from '../lib/cquence';
 import { Composer } from '../lib/composer/composer';
 import { IConductorInterface } from '../lib/interfaces/conductor-ui';
-import { PromiseVirtualFunction, CallbackVirtualFunction } from '../lib/types/secondary-types';
-import { ICallbackVirtualFunctionParameters } from '../lib/interfaces/callback-virtual-fn-params';
+import { PromiseComposedFunction, CallbackComposedFunction } from '../lib/types/secondary-types';
+import { ICallbackComposedFunctionParameters } from '../lib/interfaces/callback-virtual-fn-params';
 
 describe('Cquence API', () => {
     describe('composeFunction', () => {
-        it('should return a Virtual Function that returns a Promise, when a Promise constructor is provided', (done) => {
+        it('should return a Composed Function that returns a Promise, when a Promise constructor is provided', (done) => {
             let fn = cq.composeFunction(function(composer: Composer){
                 composer.next(function(ci: IConductorInterface){
                     ci.lets.out = 'foo';
@@ -22,7 +22,7 @@ describe('Cquence API', () => {
                     ci.lets.out += ' baz';
                     ci.return(ci.lets.out);
                 });
-            }, Promise) as PromiseVirtualFunction;
+            }, Promise) as PromiseComposedFunction;
             
             fn().then(function success(value: string){
                 expect(value).to.equal('foo bar baz');
@@ -32,7 +32,7 @@ describe('Cquence API', () => {
             });
             
         });
-        it('should return a Virtual Function that uses callbacks for feedback, when no Promise constructor is provided', (done) => {
+        it('should return a Composed Function that uses callbacks for feedback, when no Promise constructor is provided', (done) => {
             let fn = cq.composeFunction(function(composer: Composer){
                 composer.next(function(ci: IConductorInterface){
                     ci.lets.out = 'foo';
@@ -46,9 +46,9 @@ describe('Cquence API', () => {
                     ci.lets.out += ' baz';
                     ci.return(ci.lets.out);
                 });
-            }) as CallbackVirtualFunction;
+            }) as CallbackComposedFunction;
 
-            let options: ICallbackVirtualFunctionParameters = {
+            let options: ICallbackComposedFunctionParameters = {
                 success: function (value: string){
                     expect(value).to.equal('foo bar baz');
                     done();
