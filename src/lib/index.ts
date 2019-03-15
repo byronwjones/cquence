@@ -1,1 +1,1 @@
-export { cq } from "./cquence";
+export { composeFunction } from "./cquence";

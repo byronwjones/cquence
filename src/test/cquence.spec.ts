@@ -1,6 +1,6 @@
 import { describe } from 'mocha';
 import { expect } from "chai";
-import { cq } from '../lib/cquence';
+import { composeFunction } from '../lib/cquence';
 import { Composer } from '../lib/composer/composer';
 import { IConductorInterface } from '../lib/interfaces/conductor-ui';
 import { PromiseComposedFunction, CallbackComposedFunction } from '../lib/types/secondary-types';
@@ -9,7 +9,7 @@ import { ICallbackComposedFunctionParameters } from '../lib/interfaces/callback-
 describe('Cquence API', () => {
     describe('composeFunction', () => {
         it('should return a Composed Function that returns a Promise, when a Promise constructor is provided', (done) => {
-            let fn = cq.composeFunction(function(composer: Composer){
+            let fn = composeFunction(function(composer: Composer){
                 composer.next(function(ci: IConductorInterface){
                     ci.lets.out = 'foo';
                     ci.next();
@@ -33,7 +33,7 @@ describe('Cquence API', () => {
             
         });
         it('should return a Composed Function that uses callbacks for feedback, when no Promise constructor is provided', (done) => {
-            let fn = cq.composeFunction(function(composer: Composer){
+            let fn = composeFunction(function(composer: Composer){
                 composer.next(function(ci: IConductorInterface){
                     ci.lets.out = 'foo';
                     ci.next();
